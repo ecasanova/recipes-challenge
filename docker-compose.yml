@@ -18,8 +18,8 @@ services:
       - .env
     restart: unless-stopped
     links:
-      - db
-      - cache
+      - recipes-db
+      - recipes-cache
   recipes-db:
     container_name: recipes-db
     image: postgres:latest
@@ -33,6 +33,7 @@ services:
       POSTGRES_DB: ${DB_NAME}
     restart: unless-stopped
   recipes-cache:
+    container_name: recipes-cache
     image: redis:6.2-alpine
     restart: always
     ports:
