@@ -38,11 +38,31 @@ services:
     restart: always
     ports:
       - '${REDIS_PORT}:${REDIS_PORT}'
-    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
       - recipes-cache:/data
+    environment:
+      REDIS_USER: ${REDIS_USER}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+  redis-commander:
+    depends_on:
+      - recipes-cache
+    container_name: redis-commander
+    hostname: redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    environment:
+      - REDIS_HOSTS=recipes-cache
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_USER=${REDIS_USER}
+    ports:
+      - '8081:8081'
 volumes:
   recipes-db:
     driver: local
   recipes-cache:
     driver: local
+
+networks:
+  app-network:
+    driver: bridge

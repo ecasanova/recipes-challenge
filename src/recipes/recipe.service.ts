@@ -3,10 +3,13 @@ import { Repository } from 'typeorm';
 import { RecipeEntity } from './entity/recipe.entity';
 import { ImageEntity } from './entity/image.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
+import Redis from 'ioredis';
 @Injectable()
 export class RecipeService {
   constructor(
+    @InjectRedis() private readonly cache: Redis,
+
     @InjectRepository(RecipeEntity)
     private readonly recipeRepo: Repository<RecipeEntity>,
 
@@ -38,7 +41,7 @@ export class RecipeService {
       queryBuilder.andWhere('recipe.name LIKE :keyword', {
         keyword: `%${search.keyword}%`,
       });
-      queryBuilder.andWhere('recipe.description LIKE :keyword', {
+      queryBuilder.orWhere('recipe.description LIKE :keyword', {
         keyword: `%${search.keyword}%`,
       });
     }
@@ -58,7 +61,17 @@ export class RecipeService {
   }
 
   async getBySlug(slug: string): Promise<any> {
-    return await this.getRecipe({ slug: slug });
+    const recipe = await this.cache.get(slug);
+    if (recipe) return JSON.parse(recipe);
+
+    const recipeEntity = await this.getRecipe({ slug });
+    await this.cache.set(
+      slug,
+      JSON.stringify(recipeEntity),
+      'EX',
+      process.env.CACHE_TTL,
+    );
+    return recipeEntity;
   }
 
   async getRecipe(params: any) {
