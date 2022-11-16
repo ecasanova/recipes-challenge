@@ -1,7 +1,10 @@
 version: '3.1'
 services:
-  api:
-    container_name: api
+  recipes-api:
+    container_name: recipes-api
+    depends_on:
+      - recipes-db
+      - recipes-cache
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -10,18 +13,35 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - ./:/src
     env_file:
       - .env
     restart: unless-stopped
-  api-db:
-    container_name: api-db
+    links:
+      - db
+      - cache
+  recipes-db:
+    container_name: recipes-db
     image: postgres:latest
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./recipes-db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     restart: unless-stopped
+  recipes-cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - recipes-cache:/data
+volumes:
+  recipes-db:
+    driver: local
+  recipes-cache:
+    driver: local
