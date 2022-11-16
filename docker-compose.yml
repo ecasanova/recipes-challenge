@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    restart: unless-stopped
+  api-db:
+    container_name: api-db
+    image: postgres:latest
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    restart: unless-stopped
