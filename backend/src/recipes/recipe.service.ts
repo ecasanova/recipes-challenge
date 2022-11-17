@@ -10,7 +10,7 @@ import { createWriteStream, existsSync } from 'fs';
 import Redis from 'ioredis';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
-const IMAGE_PATH = 'static';
+const IMAGE_PATH = 'static/';
 
 @Injectable()
 export class RecipeService {
