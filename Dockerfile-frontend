@@ -2,9 +2,12 @@ FROM node:14-alpine as recipes-web
 ARG NODE_ENV=${NODE_ENV}
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/frontend
-COPY backend/package*.json ./
+RUN rm -rf node_modules
+COPY frontend/package*.json ./
 RUN npm install
-RUN npm run build
 COPY frontend ./
 COPY .env ./
+RUN npm link webpack
+RUN npm run build
+
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]

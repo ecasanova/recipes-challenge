@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-recipes",
+  "name": "recipes-api",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -52,7 +52,8 @@
     "resize-image-buffer": "^1.0.0",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.1.5",
