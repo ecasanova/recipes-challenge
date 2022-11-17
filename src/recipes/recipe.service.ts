@@ -233,9 +233,10 @@ export class RecipeService {
     }
   }
 
+  //TODO: This images can be stored in s3 bucker
   async downloadImage(dest, size, slug): Promise<any> {
     const original_filename = 'uploads/original/' + slug + '.jpg';
-    const resized_filename = 'uploads/' + size.name + '/' + slug + '.jpg';
+    //const resized_filename = 'uploads/' + size.name + '/' + slug + '.jpg';
 
     return new Promise((resolve, reject) => {
       try {
@@ -249,6 +250,7 @@ export class RecipeService {
                   `Original image ${original_filename} downloaded to ${size.name}`,
                 );
               }
+              /*  image resize
               if (!existsSync(resized_filename)) {
                 const imageThumb = await resizeImg(
                   await readFileSync(original_filename),
@@ -260,6 +262,7 @@ export class RecipeService {
                 await writeFileSync(resized_filename, imageThumb);
                 console.log(`Image resized ${resized_filename}`);
               }
+              */
 
               resolve(true);
             } catch (error) {
