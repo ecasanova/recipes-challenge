@@ -2,8 +2,8 @@ FROM node:12-alpine as recipes-api
 ARG NODE_ENV=${NODE_ENV}
 ENV NODE_ENV=${NODE_ENV}
 WORKDIR /api
-COPY package*.json ./
-COPY .env /usr/backend
-RUN npm install 
-COPY . .
-ENTRYPOINT ["npm", "run start"]
+COPY backend/package*.json ./
+RUN npm install
+COPY backend/ ./
+COPY .env ./
+ENTRYPOINT ["/bin/sh", "entrypoint.sh"]

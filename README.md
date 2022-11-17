@@ -1,4 +1,4 @@
-## Requirements
+## Recipes Challenge
 
 This project use:
 
@@ -31,12 +31,16 @@ Once you have docker installed, and running in your local environment, you can c
 
 ```bash
 $ git clone https://github.com/ecasanova/recipes-challenge.git
+$ cd recipes-challenge
 $ docker compose up -d
 ```
 
 ## Usage
 
-You can see public API contract in [http://127.0.0.1:3000/api](http://localhost:3000/api)
+You can see the backend in: [http://127.0.0.1:3000/api](http://127.0.0.1:3000/api)
+You can see the frontend in: [http://127.0.0.1:8080](http://127.0.0.1:8080)
+PostgreSQL database is running on the port 5432
+Redis instance is running on the port 6379
 
 ## Support
 

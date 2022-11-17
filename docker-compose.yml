@@ -11,10 +11,9 @@ services:
     ports:
       - ${API_PORT}:${API_PORT}
     volumes:
-      - .:/backend/usr/src/app
-      - /usr/backend/src/app/node_modules
-      - /usr/backend/src/app/static
-      - ./:/src/backend
+      - ./backend/:/usr/src/backend
+      - /usr/src/backend/node_modules
+      - /usr/src/backend/static
     restart: unless-stopped
     links:
       - recipes-db
@@ -57,9 +56,10 @@ services:
     ports:
       - "8081:8081"
   recipes-web:
+    container_name: recipes-web
     command: dev
     volumes:
-      - .:/usr/src/frontend
+      - ./frontend/:/usr/src/frontend
       - /usr/src/frontend/node_modules
       - /usr/src/frontend/.next
     ports:
