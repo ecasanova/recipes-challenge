@@ -3,10 +3,7 @@
 /node_modules
 /db
 /recipes-db
-/uploads/xs
-/uploads/sm
-/uploads/md
-/uploads/lg/*
+/recipes-cache
 
 # Logs
 logs

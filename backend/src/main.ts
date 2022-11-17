@@ -10,7 +10,7 @@ import { TypeORMExceptionFilter } from './utils/typeorm-exceptions.filter';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 const SERVER = '::';
-const PORT = process.env.API_PORT || 3000;
+const PORT = process.env.API_PORT || 3005;
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
