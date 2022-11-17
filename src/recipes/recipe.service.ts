@@ -10,7 +10,7 @@ import { IngredientEntity } from './entity/ingredient.entity';
 import { createWriteStream, existsSync } from 'fs';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
-const IMAGE_PATH = 'uploads/recipes/';
+const IMAGE_PATH = 'static/';
 
 @Injectable()
 export class RecipeService {
@@ -209,7 +209,7 @@ export class RecipeService {
               } catch (error) {
                 return {
                   result: 'error',
-                  message: `Error cargando ${recipe.idMeal}`,
+                  message: `Error loading ${recipe.idMeal}`,
                 };
               }
             });
@@ -244,11 +244,11 @@ export class RecipeService {
             }
           })
           .catch((error) => {
-            console.log('Error loading thumbs of ', slug);
+            console.log('Error loading image: ', slug);
             reject();
           });
       } catch (error) {
-        console.log('Error loading thumbs ', slug);
+        console.log('Error loading image ', slug);
         reject();
       }
     });

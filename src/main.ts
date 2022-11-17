@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { join } from 'path';
-
 import {
   DocumentBuilder,
   SwaggerCustomOptions,
@@ -9,12 +8,13 @@ import {
 import { AppModule } from './app.module';
 import { TypeORMExceptionFilter } from './utils/typeorm-exceptions.filter';
 import * as bodyParser from 'body-parser';
-
+import { NestExpressApplication } from '@nestjs/platform-express';
 const SERVER = process.env.NODE_ENV == 'production' ? '::' : 'localhost';
 const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app: NestExpressApplication = await NestFactory.create(AppModule);
+
   app.useGlobalFilters(new TypeORMExceptionFilter());
   const options = new DocumentBuilder()
     .setTitle('Recipes API')
@@ -35,6 +35,11 @@ async function bootstrap() {
     origin: '*',
     methods: 'GET, PUT, POST, DELETE',
     allowedHeaders: 'Content-Type, Authorization, apiKey',
+  });
+
+  app.useStaticAssets(join(__dirname, '..', 'static'), {
+    prefix: '/static/',
+    index: false,
   });
   await app.listen(Number(PORT), SERVER);
 
