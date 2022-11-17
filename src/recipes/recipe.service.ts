@@ -8,7 +8,6 @@ import Redis from 'ioredis';
 import { CategoryEntity } from './entity/category.entity';
 import { AreaEntity } from './entity/area.entity';
 import { IngredientEntity } from './entity/ingredient.entity';
-import { PassThrough } from 'stream';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,7 +18,7 @@ const imageSizes = [
   { name: 'md', width: 480, heigth: 640 },
   { name: 'lg', width: 680, heigth: 840 },
 ];
-import { writeFileSync, createWriteStream } from 'fs';
+import { createWriteStream, existsSync, readFileSync, writeFileSync } from 'fs';
 
 @Injectable()
 export class RecipeService {
@@ -197,9 +196,7 @@ export class RecipeService {
   }
 
   async createBulkRecipes(): Promise<any> {
-    const categories = await this.categoryRepo.find({
-      take: 1,
-    });
+    const categories = await this.categoryRepo.find({});
     let inserts = 0;
     try {
       await categories.forEach(async (category) => {
@@ -237,7 +234,8 @@ export class RecipeService {
   }
 
   async downloadImage(dest, size, slug): Promise<any> {
-    const filename = 'uploads/' + slug + '.jpg';
+    const original_filename = 'uploads/original/' + slug + '.jpg';
+    const resized_filename = 'uploads/' + size.name + '/' + slug + '.jpg';
 
     return new Promise((resolve, reject) => {
       try {
@@ -245,8 +243,24 @@ export class RecipeService {
           .get(dest, { responseType: 'stream' })
           .then(async (response) => {
             try {
-              response.data.pipe(createWriteStream(filename));
-              console.log(`Image ${filename} downloaded to ${size.name}`);
+              if (!existsSync(original_filename)) {
+                await response.data.pipe(createWriteStream(original_filename));
+                console.log(
+                  `Original image ${original_filename} downloaded to ${size.name}`,
+                );
+              }
+              if (!existsSync(resized_filename)) {
+                const imageThumb = await resizeImg(
+                  await readFileSync(original_filename),
+                  {
+                    width: size.width,
+                    heigth: size.heigth,
+                  },
+                );
+                await writeFileSync(resized_filename, imageThumb);
+                console.log(`Image resized ${resized_filename}`);
+              }
+
               resolve(true);
             } catch (error) {
               console.log(error);
