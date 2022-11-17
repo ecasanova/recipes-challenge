@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import {
   Body,
-  CacheInterceptor,
   CacheTTL,
   Controller,
   DefaultValuePipe,
@@ -10,7 +9,6 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { RecipeService } from './recipe.service';
@@ -30,10 +28,16 @@ export class RecipeController {
     return await this.recipeService.getAll(page, limit, search);
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheTTL(30)
   @Get('getBySlug/:slug')
   async getBySlug(@Param('slug') slug: string): Promise<any> {
     return await this.recipeService.getBySlug(slug);
+  }
+
+  @Get('loadData')
+  async loadData(): Promise<any> {
+    //await this.recipeService.createBulkCategories();
+    //await this.recipeService.createBulkAreas();
+    //await this.recipeService.createBulkIngredients();
+    await this.recipeService.createBulkRecipes();
   }
 }

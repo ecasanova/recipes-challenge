@@ -7,22 +7,13 @@ import {
 } from 'typeorm';
 import { RecipeEntity } from './recipe.entity';
 
-@Entity('images', { schema: 'public' })
-export class ImageEntity {
+@Entity('ingredient', { schema: 'public' })
+export class IngredientEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('text', { name: 'xs', nullable: true })
-  xs: string | null;
-
-  @Column('text', { name: 'sm', nullable: true })
-  sm: string | null;
-
-  @Column('text', { name: 'md', nullable: true })
-  md: string | null;
-
-  @Column('text', { name: 'lg', nullable: true })
-  lg: string | null;
+  @Column('text', { name: 'name', nullable: true, unique: true })
+  name: string | null;
 
   @ManyToOne(() => RecipeEntity, (recipe) => recipe.images, {
     onDelete: 'CASCADE',

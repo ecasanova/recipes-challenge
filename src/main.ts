@@ -1,4 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+import { join } from 'path';
+
 import {
   DocumentBuilder,
   SwaggerCustomOptions,

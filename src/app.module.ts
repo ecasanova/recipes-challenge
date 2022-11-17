@@ -14,7 +14,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    CacheModule.register({ isGlobal: true }),
     TypeOrmModule.forRoot({
       ...ormconfig,
       keepConnectionAlive: true,
@@ -43,12 +42,6 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     RecipeModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
