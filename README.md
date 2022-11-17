@@ -22,10 +22,10 @@ This project use:
 
 To run the project you need to install [docker](https://docs.docker.com), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) you can follow the instructions below
 
- * [How to install on mac](https://docs.docker.com/desktop/install/mac-install/)
- * [How to install on windows](https://docs.docker.com/desktop/install/windows-install/)
- * [How to install on linux](https://docs.docker.com/desktop/install/linux-install/)
- * [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [How to install on mac](https://docs.docker.com/desktop/install/mac-install/)
+- [How to install on windows](https://docs.docker.com/desktop/install/windows-install/)
+- [How to install on linux](https://docs.docker.com/desktop/install/linux-install/)
+- [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Once you have docker installed, and running in your local environment, you can clone this repository and start the docker containers
 
@@ -40,6 +40,8 @@ $ docker compose up -d
 You can see the backend in: [http://127.0.0.1:3000/api](http://127.0.0.1:3000/api)
 
 You can see the frontend in: [http://127.0.0.1:8080](http://127.0.0.1:8080)
+
+You can see redis commander in [http://127.0.0.1:8081/](http://127.0.0.1:8081/)
 
 PostgreSQL database is running on the port 5432
 

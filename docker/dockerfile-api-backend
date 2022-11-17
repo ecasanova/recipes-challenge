@@ -1,11 +1,8 @@
 FROM node:12-alpine as recipes-api
-ARG NODE_ENV=${NODE_ENV}
-ENV NODE_ENV=${NODE_ENV}
 WORKDIR /usr/src/backend
-RUN rm -rf node_modules
 COPY backend/package*.json ./
 RUN npm install
 RUN npm link webpack
 COPY backend/ ./
 COPY .env ./
-ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/npm", "run", "start"]

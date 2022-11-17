@@ -44,8 +44,9 @@ export class RecipeService {
   async getAll(page, limit, search): Promise<any> {
     const queryBuilder = await this.recipeRepo
       .createQueryBuilder('recipe')
-      .leftJoinAndSelect('recipe.images', 'images')
-      .orderBy('recipe.name', 'ASC');
+      .leftJoinAndSelect('recipe.area', 'area')
+      .leftJoinAndSelect('recipe.category', 'category')
+      .orderBy('area.name', 'ASC');
 
     queryBuilder.where('1=1');
 
