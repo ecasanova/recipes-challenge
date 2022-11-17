@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import * as ormconfig from './ormconfig';
+import { config } from './ormconfig';
 import { RecipeModule } from './recipes/recipe.module';
 import { RedisModule, RedisService } from '@liaoliaots/nestjs-redis';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -12,7 +12,7 @@ import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      ...ormconfig,
+      ...config,
       keepConnectionAlive: true,
     }),
     RedisModule.forRoot({

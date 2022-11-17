@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 services:
   recipes-api:
     container_name: recipes-api
@@ -7,16 +7,14 @@ services:
       - recipes-cache
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile-backend
     ports:
-      - ${PORT}:${PORT}
+      - ${API_PORT}:${API_PORT}
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/uploads
-      - ./:/src
-    env_file:
-      - .env
+      - .:/backend/usr/src/app
+      - /usr/backend/src/app/node_modules
+      - /usr/backend/src/app/static
+      - ./:/src/backend
     restart: unless-stopped
     links:
       - recipes-db
@@ -27,7 +25,7 @@ services:
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:
-      - ./recipes-db:/var/lib/postgresql/data
+      - ./backend/recipes-db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -38,7 +36,7 @@ services:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '${REDIS_PORT}:${REDIS_PORT}'
+      - "${REDIS_PORT}:${REDIS_PORT}"
     volumes:
       - recipes-cache:/data
     environment:
@@ -57,11 +55,26 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_USER=${REDIS_USER}
     ports:
-      - '8081:8081'
+      - "8081:8081"
+  recipes-web:
+    command: dev
+    volumes:
+      - .:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+      - /usr/src/frontend/.next
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    build:
+      context: .
+      dockerfile: ./Dockerfile-frontend
 volumes:
   recipes-db:
     driver: local
   recipes-cache:
+    driver: local
+  recipes-web:
+    driver: local
+  recipes-apo:
     driver: local
 
 networks:

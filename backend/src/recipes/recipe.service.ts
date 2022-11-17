@@ -1,14 +1,13 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { RecipeEntity } from '../entity/recipe.entity';
+import { CategoryEntity } from '../entity/category.entity';
+import { AreaEntity } from '../entity/area.entity';
+import { IngredientEntity } from '../entity/ingredient.entity';
 import { Repository } from 'typeorm';
-import { RecipeEntity } from './entity/recipe.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import Redis from 'ioredis';
-import { CategoryEntity } from './entity/category.entity';
-import { AreaEntity } from './entity/area.entity';
-import { IngredientEntity } from './entity/ingredient.entity';
 import { createWriteStream, existsSync } from 'fs';
-import { constants } from 'crypto';
+import Redis from 'ioredis';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
 const IMAGE_PATH = 'static/';
@@ -99,7 +98,9 @@ export class RecipeService {
   }
 
   async createBulkCategories(): Promise<any> {
-    axios({
+    console.log(`------------------------------------------------------`);
+    console.log('Importing categories...');
+    return await axios({
       method: 'GET',
       url: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
     })
@@ -108,14 +109,16 @@ export class RecipeService {
       })
       .then((res) => {
         const categories = res.data.meals;
-        categories.forEach((category) => {
-          this.createCategory(category);
+        categories.forEach(async (category) => {
+          await this.createCategory(category);
         });
       });
   }
 
   async createBulkAreas(): Promise<any> {
-    axios({
+    console.log(`------------------------------------------------------`);
+    console.log('Importing areas...');
+    await axios({
       method: 'GET',
       url: 'https://www.themealdb.com/api/json/v1/1/list.php?a=list',
     })
@@ -126,14 +129,16 @@ export class RecipeService {
       })
       .then((res) => {
         const areas = res.data.meals;
-        areas.forEach((area) => {
-          this.createArea(area);
+        areas.forEach(async (area) => {
+          await this.createArea(area);
         });
       });
   }
 
   async createBulkIngredients(): Promise<any> {
-    axios({
+    console.log(`------------------------------------------------------`);
+    console.log('Importing ingredients...');
+    return await axios({
       method: 'GET',
       url: 'https://www.themealdb.com/api/json/v1/1/list.php?i=list',
     })
@@ -144,8 +149,8 @@ export class RecipeService {
       })
       .then((res) => {
         const ingredients = res.data.meals;
-        ingredients.forEach((ingredient) => {
-          this.createIngredient(ingredient);
+        ingredients.forEach(async (ingredient) => {
+          await this.createIngredient(ingredient);
         });
       });
   }
@@ -185,10 +190,11 @@ export class RecipeService {
   }
 
   async createBulkRecipes(): Promise<any> {
+    console.log(`------------------------------------------------------`);
+    console.log('Importing recipes...');
     const categories = await this.categoryRepo.find({});
-    let inserts = 0;
     try {
-      await categories.forEach(async (category) => {
+      return await categories.forEach(async (category) => {
         //console.log(`Looking for al recipes of: ${category.name}`);
         await this.delay(1000);
         await this.getRecipesByCategory(category.name).then(
@@ -200,10 +206,7 @@ export class RecipeService {
                 await this.getRecipesById(recipe.idMeal).then(
                   async (recipeDetail) => {
                     //console.log(`Insert on dabase ${recipeDetail[0].idMeal}`);
-                    if (inserts < 1) {
-                      await this.createRecipe(recipeDetail[0]);
-                    }
-                    inserts++;
+                    await this.createRecipe(recipeDetail[0]);
                   },
                 );
               } catch (error) {
@@ -215,10 +218,10 @@ export class RecipeService {
             });
           },
         );
-        return { result: 'success', inserts: inserts };
+        return { result: 'success' };
       });
     } catch (e) {
-      return { result: 'error', inserts: inserts, error: e };
+      return { result: 'error', error: e };
     }
   }
 
@@ -260,11 +263,13 @@ export class RecipeService {
       where: { name: category.strCategory },
     });
     if (categoryEntity) {
+      console.log(`Category ${category.strCategory} already exists`);
       return categoryEntity;
     }
     categoryEntity = new CategoryEntity();
     categoryEntity.name = category.strCategory;
-    await this.categoryRepo.insert(categoryEntity);
+    console.log(`Inserting category ${category.strCategory}`);
+    return await this.categoryRepo.insert(categoryEntity);
   }
 
   async createArea(area: any): Promise<any> {
@@ -275,10 +280,12 @@ export class RecipeService {
       },
     });
     if (areaEntity) {
+      console.log(`Area ${area.strArea} already exists`);
       return areaEntity;
     }
     areaEntity = new AreaEntity();
     areaEntity.name = area.strArea;
+    console.log(`Inserting area ${area.strArea}`);
     return await this.areaRepo.insert(areaEntity);
   }
 
@@ -290,10 +297,12 @@ export class RecipeService {
       },
     });
     if (ingredientEntity) {
+      console.log(`Ingredient ${ingredient.strIngredient} already exists`);
       return ingredientEntity;
     }
     ingredientEntity = new IngredientEntity();
     ingredientEntity.name = ingredient.strIngredient;
+    console.log(`Inserting ingredient ${ingredient.strIngredient}`);
     return await this.ingredientRepo.insert(ingredientEntity);
   }
 
@@ -316,12 +325,12 @@ export class RecipeService {
       recipeEntity.youtube = recipe.strYoutube;
       recipeEntity.source = recipe.strSource;
       recipeEntity.image = IMAGE_PATH + slug + '.jpg';
-      recipeEntity.idCategory = await this.categoryRepo.findOne({
+      recipeEntity.category = await this.categoryRepo.findOne({
         where: {
           name: recipe.strCategory,
         },
       });
-      recipeEntity.idArea = await this.areaRepo.findOne({
+      recipeEntity.area = await this.areaRepo.findOne({
         where: {
           name: recipe.strArea,
         },
@@ -366,8 +375,8 @@ export class RecipeService {
         ingredient5,
         ingredient6,
       ];
-      console.log('Inserting recipe: ', recipeEntity.name);
-      await this.recipeRepo.save(recipeEntity);
+      console.log('Inserting recipe:', recipeEntity.name);
+      return await this.recipeRepo.create(recipeEntity);
     } catch (e) {
       throw new ForbiddenException('Error creating recipe');
     }

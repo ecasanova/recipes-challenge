@@ -2,7 +2,9 @@
 
 This project use:
 
-[NestJs](https://github.com/nestjs/nest) - NestJS is a framework for building efficient, scalable Node.js web applications. It uses modern JavaScript
+[NestJs](https://github.com/nestjs/nest) - Backend: NestJS is a framework for building efficient, scalable Node.js web applications. It uses modern JavaScript
+
+[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: React framework
 
 [PostgreSQL](https://www.postgresql.org) - PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation
 
@@ -18,7 +20,17 @@ This project use:
 
 ## Installation
 
+To run the project you need to install [docker](https://docs.docker.com), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) you can follow the instructions below
+
+    * [How to install on mac](https://docs.docker.com/desktop/install/mac-install/)
+    * [How to install on windows](https://docs.docker.com/desktop/install/windows-install/)
+    * [How to install on linux](https://docs.docker.com/desktop/install/linux-install/)
+    * [How to install git] (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+Once you have docker installed, and running in your local environment, you can clone this repository and start the docker containers
+
 ```bash
+$ git clone https://github.com/ecasanova/recipes-challenge.git
 $ docker compose up -d
 ```
 
@@ -38,4 +50,4 @@ A public database was used for the initial loading of the system, this informati
 
 This is the structure of the database:
 
-![ER](static/recipes-er.png)
+![ER](backend/static/recipes-er.png)

@@ -1,0 +1,10 @@
+FROM node:14-alpine as recipes-web
+ARG NODE_ENV=${NODE_ENV}
+ENV NODE_ENV=${NODE_ENV}
+WORKDIR /usr/src/frontend
+COPY frontend/package.json ./
+COPY frontend/package-lock.json ./
+COPY .env ./
+RUN npm install
+RUN npm run build
+ENTRYPOINT ["npm", "run start"]

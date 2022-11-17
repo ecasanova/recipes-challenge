@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { RecipeService } from './recipe.service';
-import { RecipeSearchDto } from './entity/dto/recipe-search.dto';
+import { RecipeSearchDto } from '../entity/dto/recipe-search.dto';
 @ApiTags('recipe')
 @ApiSecurity('apiKey')
 @Controller('recipe')
@@ -35,9 +35,9 @@ export class RecipeController {
 
   @Get('loadData')
   async loadData(): Promise<any> {
-    //await this.recipeService.createBulkCategories();
-    //await this.recipeService.createBulkAreas();
-    //await this.recipeService.createBulkIngredients();
+    await this.recipeService.createBulkCategories();
+    await this.recipeService.createBulkAreas();
+    await this.recipeService.createBulkIngredients();
     await this.recipeService.createBulkRecipes();
   }
 }

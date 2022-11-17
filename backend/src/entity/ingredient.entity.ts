@@ -16,6 +16,9 @@ export class IngredientEntity {
   @Column('text', { name: 'name', nullable: true, unique: true })
   name: string | null;
 
-  @ManyToMany(() => RecipeEntity, (recipe) => recipe.ingredients)
+  @ManyToMany(() => RecipeEntity, (recipe) => recipe.ingredients, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   recipes: RecipeEntity[];
 }

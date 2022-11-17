@@ -2,10 +2,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  OneToOne,
   ManyToOne,
   JoinColumn,
-  OneToMany,
   JoinTable,
   ManyToMany,
 } from 'typeorm';
@@ -49,12 +47,12 @@ export class RecipeEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'idArea', referencedColumnName: 'id' }])
-  public idArea?: AreaEntity;
+  public area?: AreaEntity;
 
   @ManyToOne(() => CategoryEntity, (category) => category.recipes, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'idCategory', referencedColumnName: 'id' }])
-  public idCategory?: CategoryEntity;
+  public category?: CategoryEntity;
 }
