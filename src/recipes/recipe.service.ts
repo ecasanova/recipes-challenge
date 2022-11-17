@@ -1,24 +1,16 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { RecipeEntity } from './entity/recipe.entity';
-import { ImageEntity } from './entity/image.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectRedis } from '@liaoliaots/nestjs-redis';
 import Redis from 'ioredis';
 import { CategoryEntity } from './entity/category.entity';
 import { AreaEntity } from './entity/area.entity';
 import { IngredientEntity } from './entity/ingredient.entity';
+import { createWriteStream, existsSync } from 'fs';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const resizeImg = require('resize-image-buffer');
-const imageSizes = [
-  { name: 'xs', width: 120, heigth: 160 },
-  { name: 'sm', width: 240, heigth: 320 },
-  { name: 'md', width: 480, heigth: 640 },
-  { name: 'lg', width: 680, heigth: 840 },
-];
-import { createWriteStream, existsSync, readFileSync, writeFileSync } from 'fs';
+const IMAGE_PATH = 'uploads/recipes/';
 
 @Injectable()
 export class RecipeService {
@@ -27,9 +19,6 @@ export class RecipeService {
 
     @InjectRepository(RecipeEntity)
     private readonly recipeRepo: Repository<RecipeEntity>,
-
-    @InjectRepository(ImageEntity)
-    private readonly imageRepo: Repository<ImageEntity>,
 
     @InjectRepository(CategoryEntity)
     private readonly categoryRepo: Repository<CategoryEntity>,
@@ -234,9 +223,8 @@ export class RecipeService {
   }
 
   //TODO: This images can be stored in s3 bucker
-  async downloadImage(dest, size, slug): Promise<any> {
-    const original_filename = 'uploads/original/' + slug + '.jpg';
-    //const resized_filename = 'uploads/' + size.name + '/' + slug + '.jpg';
+  async downloadImage(dest, slug): Promise<any> {
+    const original_filename = IMAGE_PATH + slug + '.jpg';
 
     return new Promise((resolve, reject) => {
       try {
@@ -247,34 +235,20 @@ export class RecipeService {
               if (!existsSync(original_filename)) {
                 await response.data.pipe(createWriteStream(original_filename));
                 console.log(
-                  `Original image ${original_filename} downloaded to ${size.name}`,
+                  `Original image ${original_filename} downloaded successfully`,
                 );
               }
-              /*  image resize
-              if (!existsSync(resized_filename)) {
-                const imageThumb = await resizeImg(
-                  await readFileSync(original_filename),
-                  {
-                    width: size.width,
-                    heigth: size.heigth,
-                  },
-                );
-                await writeFileSync(resized_filename, imageThumb);
-                console.log(`Image resized ${resized_filename}`);
-              }
-              */
-
               resolve(true);
             } catch (error) {
               console.log(error);
             }
           })
           .catch((error) => {
-            console.log('Error loading thumbs of ', slug, size.name);
+            console.log('Error loading thumbs of ', slug);
             reject();
           });
       } catch (error) {
-        console.log('Error loading thumbs ', slug, size.name);
+        console.log('Error loading thumbs ', slug);
         reject();
       }
     });
@@ -308,7 +282,7 @@ export class RecipeService {
       recipeEntity.slug = slug;
       recipeEntity.youtube = recipe.strYoutube;
       recipeEntity.source = recipe.strSource;
-      recipeEntity.thumb = recipe.strMealThumb;
+      recipeEntity.image = IMAGE_PATH + slug + '.jpg';
       recipeEntity.idCategory = await this.categoryRepo.findOne({
         where: {
           name: recipe.strCategory,
@@ -320,9 +294,7 @@ export class RecipeService {
         },
       });
 
-      await imageSizes.forEach(async (size) => {
-        await this.downloadImage(recipe.strMealThumb, size, slug);
-      });
+      await this.downloadImage(recipe.strMealThumb, slug);
 
       return await this.recipeRepo.insert(recipeEntity);
     } catch (e) {

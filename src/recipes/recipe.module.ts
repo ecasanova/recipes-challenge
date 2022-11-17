@@ -3,7 +3,6 @@ import { RecipeController } from './recipe.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecipeEntity } from './entity/recipe.entity';
 import { RecipeService } from './recipe.service';
-import { ImageEntity } from './entity/image.entity';
 import { AreaEntity } from './entity/area.entity';
 import { CategoryEntity } from './entity/category.entity';
 import { IngredientEntity } from './entity/ingredient.entity';
@@ -12,7 +11,6 @@ import { IngredientEntity } from './entity/ingredient.entity';
   imports: [
     TypeOrmModule.forFeature([
       RecipeEntity,
-      ImageEntity,
       AreaEntity,
       CategoryEntity,
       IngredientEntity,

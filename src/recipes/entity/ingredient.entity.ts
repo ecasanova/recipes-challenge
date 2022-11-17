@@ -15,7 +15,7 @@ export class IngredientEntity {
   @Column('text', { name: 'name', nullable: true, unique: true })
   name: string | null;
 
-  @ManyToOne(() => RecipeEntity, (recipe) => recipe.images, {
+  @ManyToOne(() => RecipeEntity, (recipe) => recipe.ingredients, {
     onDelete: 'CASCADE',
   })
   @JoinColumn([{ name: 'idRecipe', referencedColumnName: 'id' }])

@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 import { AreaEntity } from './area.entity';
 import { CategoryEntity } from './category.entity';
-import { ImageEntity } from './image.entity';
 import { IngredientEntity } from './ingredient.entity';
 
 @Entity('recipe', { schema: 'public' })
@@ -32,14 +31,8 @@ export class RecipeEntity {
   @Column('text', { name: 'source', nullable: true })
   source: string | null;
 
-  @Column('text', { name: 'thumb', nullable: true })
-  thumb: string | null;
-
-  @OneToOne(() => ImageEntity, (image) => image.recipe, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  images: ImageEntity[];
+  @Column('text', { name: 'image', nullable: true })
+  image: string | null;
 
   @OneToMany(() => IngredientEntity, (ingredient) => ingredient.recipe, {
     cascade: true,
