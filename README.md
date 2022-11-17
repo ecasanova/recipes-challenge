@@ -25,7 +25,7 @@ To run the project you need to install [docker](https://docs.docker.com), and [g
  * [How to install on mac](https://docs.docker.com/desktop/install/mac-install/)
  * [How to install on windows](https://docs.docker.com/desktop/install/windows-install/)
  * [How to install on linux](https://docs.docker.com/desktop/install/linux-install/)
- * [How to install git] (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+ * [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 Once you have docker installed, and running in your local environment, you can clone this repository and start the docker containers
 
