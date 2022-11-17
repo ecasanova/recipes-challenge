@@ -14,7 +14,7 @@ This project use:
 
 [Redis](https://redis.io/) - Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker.
 
-[MeatAPI](https://www.themealdb.com/) - This is a public database of recipes, I take this recipes and fill out my local database. Including images and thumbnails
+[TheMealDB](https://www.themealdb.com/) - This is a public database of recipes, I take this recipes and fill out my local database. Including images and thumbnails
 
 ## Installation
 
@@ -24,7 +24,7 @@ $ docker compose up -d
 
 ## Usage
 
-You can see public API contract in [http://localhost:3000/api](http://localhost:3000/api)
+You can see public API contract in [http://127.0.0.1:3000/api](http://localhost:3000/api)
 
 ## Support
 
