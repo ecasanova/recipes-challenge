@@ -61,4 +61,4 @@ A public database was used for the initial loading of the system, this informati
 
 This is the structure of the database:
 
-![ER](backend/static/recipes-er.png)
+![ER](er.png)

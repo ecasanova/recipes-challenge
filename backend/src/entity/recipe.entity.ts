@@ -46,13 +46,13 @@ export class RecipeEntity {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn([{ name: 'idArea', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'areaId', referencedColumnName: 'id' }])
   public area?: AreaEntity;
 
   @ManyToOne(() => CategoryEntity, (category) => category.recipes, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn([{ name: 'idCategory', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'categoryId', referencedColumnName: 'id' }])
   public category?: CategoryEntity;
 }
