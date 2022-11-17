@@ -10,7 +10,7 @@ import { createWriteStream, existsSync } from 'fs';
 import Redis from 'ioredis';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
-const IMAGE_PATH = 'static/';
+const IMAGE_PATH = 'static';
 
 @Injectable()
 export class RecipeService {
@@ -248,10 +248,12 @@ export class RecipeService {
             }
           })
           .catch((error) => {
+            console.log(error);
             console.log('Error loading image: ', slug);
             reject();
           });
       } catch (error) {
+        console.log(error);
         console.log('Error loading image ', slug);
         reject();
       }
@@ -337,6 +339,8 @@ export class RecipeService {
         },
       });
 
+      await this.downloadImage(recipe.strMealThumb, slug);
+
       const ingredient1: IngredientEntity = await this.ingredientRepo.findOne({
         where: {
           name: recipe.strIngredient1,
@@ -377,7 +381,7 @@ export class RecipeService {
         ingredient6,
       ];
       console.log('Inserting recipe:', recipeEntity.name);
-      return await this.recipeRepo.create(recipeEntity);
+      return await this.recipeRepo.insert(recipeEntity);
     } catch (e) {
       throw new ForbiddenException('Error creating recipe');
     }

@@ -9,7 +9,7 @@ import { AppModule } from './app.module';
 import { TypeORMExceptionFilter } from './utils/typeorm-exceptions.filter';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
-const SERVER = '::';
+const SERVER = '127.0.0.1';
 const PORT = process.env.API_PORT || 3005;
 
 async function bootstrap() {
@@ -45,7 +45,6 @@ async function bootstrap() {
 
   console.log(`------------------------------------------------------`);
   console.log(`Application is running on: ${await app.getUrl()}`);
-  console.log(`Database: ${process.env.DB_HOST}`);
   console.log(`------------------------------------------------------`);
 }
 
