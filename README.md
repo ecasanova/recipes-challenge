@@ -29,3 +29,13 @@ You can see public API contract in [http://127.0.0.1:3000/api](http://localhost:
 ## Support
 
 Enrique Casanova - [ecasanova@webfactorystudio.co](ecasanova@webfactorystudio.co)
+
+## Overview
+
+A public database was used for the initial loading of the system, this information was loaded into the PostgreSQL database, and the project includes migrations at startup
+
+## Database Structure
+
+This is the structure of the database:
+
+![ER](static/recipes-er.png)

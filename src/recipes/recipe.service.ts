@@ -8,6 +8,7 @@ import { CategoryEntity } from './entity/category.entity';
 import { AreaEntity } from './entity/area.entity';
 import { IngredientEntity } from './entity/ingredient.entity';
 import { createWriteStream, existsSync } from 'fs';
+import { constants } from 'crypto';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const axios = require('axios');
 const IMAGE_PATH = 'static/';
@@ -93,8 +94,7 @@ export class RecipeService {
       where: {
         slug: params.slug,
       },
-      relations: ['area', 'category'],
-      withDeleted: true,
+      relations: ['area', 'category', 'ingredients'],
     });
   }
 
@@ -102,9 +102,6 @@ export class RecipeService {
     axios({
       method: 'GET',
       url: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
-      headers: {
-        apikey: 1,
-      },
     })
       .catch(() => {
         throw new ForbiddenException('API not available');
@@ -121,9 +118,6 @@ export class RecipeService {
     axios({
       method: 'GET',
       url: 'https://www.themealdb.com/api/json/v1/1/list.php?a=list',
-      headers: {
-        apikey: 1,
-      },
     })
       .catch((error) => {
         throw new ForbiddenException(
@@ -142,9 +136,6 @@ export class RecipeService {
     axios({
       method: 'GET',
       url: 'https://www.themealdb.com/api/json/v1/1/list.php?i=list',
-      headers: {
-        apikey: 1,
-      },
     })
       .catch((error) => {
         throw new ForbiddenException(
@@ -163,9 +154,6 @@ export class RecipeService {
     return await axios({
       method: 'GET',
       url: `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`,
-      headers: {
-        apikey: 1,
-      },
     })
       .catch((error) => {
         throw new ForbiddenException(
@@ -181,9 +169,6 @@ export class RecipeService {
     return await axios({
       method: 'GET',
       url: `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
-      headers: {
-        apikey: 1,
-      },
     })
       .catch((error) => {
         throw new ForbiddenException(
@@ -270,28 +255,61 @@ export class RecipeService {
   }
 
   async createCategory(category: any): Promise<any> {
-    const categoryEntity = new CategoryEntity();
+    //Check if category already exists
+    let categoryEntity = await this.categoryRepo.findOne({
+      where: { name: category.strCategory },
+    });
+    if (categoryEntity) {
+      return categoryEntity;
+    }
+    categoryEntity = new CategoryEntity();
     categoryEntity.name = category.strCategory;
     await this.categoryRepo.insert(categoryEntity);
   }
 
   async createArea(area: any): Promise<any> {
-    const areaEntity = new AreaEntity();
+    //Check if area already exists
+    let areaEntity = await this.areaRepo.findOne({
+      where: {
+        name: area.strArea,
+      },
+    });
+    if (areaEntity) {
+      return areaEntity;
+    }
+    areaEntity = new AreaEntity();
     areaEntity.name = area.strArea;
-    await this.areaRepo.insert(areaEntity);
+    return await this.areaRepo.insert(areaEntity);
   }
 
-  async createIngredient(area: any): Promise<any> {
-    const ingredientEntity = new IngredientEntity();
-    ingredientEntity.name = area.strIngredient;
-    await this.ingredientRepo.insert(ingredientEntity);
+  async createIngredient(ingredient: any): Promise<any> {
+    //Check if ingredient already exists
+    let ingredientEntity = await this.ingredientRepo.findOne({
+      where: {
+        name: ingredient.strIngredient1,
+      },
+    });
+    if (ingredientEntity) {
+      return ingredientEntity;
+    }
+    ingredientEntity = new IngredientEntity();
+    ingredientEntity.name = ingredient.strIngredient;
+    return await this.ingredientRepo.insert(ingredientEntity);
   }
 
   async createRecipe(recipe: any): Promise<any> {
+    const slug = this.slugify(recipe.strMeal);
+    //Check if recipe already exists
+    let recipeEntity = await this.recipeRepo.findOne({
+      where: {
+        slug: slug,
+      },
+    });
+    if (recipeEntity) {
+      this.recipeRepo.delete(recipeEntity.id);
+    }
     try {
-      const recipeEntity = new RecipeEntity();
-      const slug = this.slugify(recipe.strMeal);
-      await this.deleteBySlug(slug);
+      recipeEntity = new RecipeEntity();
       recipeEntity.name = recipe.strMeal;
       recipeEntity.description = recipe.strInstructions;
       recipeEntity.slug = slug;
@@ -309,21 +327,49 @@ export class RecipeService {
         },
       });
 
-      await this.downloadImage(recipe.strMealThumb, slug);
+      const ingredient1: IngredientEntity = await this.ingredientRepo.findOne({
+        where: {
+          name: recipe.strIngredient1,
+        },
+      });
+      const ingredient2: IngredientEntity = await this.ingredientRepo.findOne({
+        where: {
+          name: recipe.strIngredient2,
+        },
+      });
+      const ingredient3: IngredientEntity = await this.ingredientRepo.findOne({
+        where: {
+          name: recipe.strIngredient3,
+        },
+      });
+      const ingredient4: IngredientEntity = await this.ingredientRepo.findOne({
+        where: {
+          name: recipe.strIngredient4,
+        },
+      });
+      const ingredient5: IngredientEntity = await this.ingredientRepo.findOne({
+        where: {
+          name: recipe.strIngredient5,
+        },
+      });
+      const ingredient6: IngredientEntity = await this.ingredientRepo.findOne({
+        where: {
+          name: recipe.strIngredient6,
+        },
+      });
 
-      return await this.recipeRepo.insert(recipeEntity);
+      recipeEntity.ingredients = [
+        ingredient1,
+        ingredient2,
+        ingredient3,
+        ingredient4,
+        ingredient5,
+        ingredient6,
+      ];
+      console.log('Inserting recipe: ', recipeEntity.name);
+      await this.recipeRepo.save(recipeEntity);
     } catch (e) {
       throw new ForbiddenException('Error creating recipe');
-    }
-  }
-
-  async deleteBySlug(slug: string): Promise<any> {
-    const recipe = await this.recipeRepo.findOne({ where: { slug: slug } });
-    if (recipe) {
-      await this.recipeRepo.delete(recipe.id);
-      return { result: 'success', message: 'Recipe deleted' };
-    } else {
-      return { result: 'error', message: 'Recipe not found' };
     }
   }
 }

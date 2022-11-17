@@ -6,6 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { AreaEntity } from './area.entity';
 import { CategoryEntity } from './category.entity';
@@ -34,10 +36,12 @@ export class RecipeEntity {
   @Column('text', { name: 'image', nullable: true })
   image: string | null;
 
-  @OneToMany(() => IngredientEntity, (ingredient) => ingredient.recipe, {
-    cascade: true,
+  @ManyToMany(() => IngredientEntity, (ingredient) => ingredient.recipes, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: true,
   })
+  @JoinTable()
   ingredients: IngredientEntity[];
 
   @ManyToOne(() => AreaEntity, (area) => area.recipes, {

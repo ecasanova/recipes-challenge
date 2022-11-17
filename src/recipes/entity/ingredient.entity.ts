@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,9 +16,6 @@ export class IngredientEntity {
   @Column('text', { name: 'name', nullable: true, unique: true })
   name: string | null;
 
-  @ManyToOne(() => RecipeEntity, (recipe) => recipe.ingredients, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn([{ name: 'idRecipe', referencedColumnName: 'id' }])
-  recipe: RecipeEntity;
+  @ManyToMany(() => RecipeEntity, (recipe) => recipe.ingredients)
+  recipes: RecipeEntity[];
 }
