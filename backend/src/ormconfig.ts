@@ -13,13 +13,11 @@ export const config: any = {
   migrationsRun: true,
   autoLoadEntities: true,
   logging: true,
-  entities: ['entity/*.entity.{.ts,.js}'],
-  migrations: ['migration/**/*.{.ts,.js}'],
+  entities: [__dirname + '/entity/*.entity.{.ts}'],
+  migrations: [__dirname + '/migrations/**/*.ts'],
   cli: {
-    entitiesDir: 'src/entity',
-    migrationsDir: 'src/migration',
-    subscribersDir: 'src/subscriber',
+    migrationsDir: './src/migrations',
   },
 };
-const data = new DataSource(config);
-export default data;
+const dataSource = new DataSource(config);
+export default dataSource;

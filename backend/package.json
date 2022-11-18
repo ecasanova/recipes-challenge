@@ -21,9 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./src/ormconfig.ts",
-    "typeorm:generate-migration": "npm run typeorm -- -d ./src/ormconfig.ts migration:generate ./migrations/$npm_config_name",
-    "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
-    "typeorm:revert-migration": "npm run typeorm -- -d ./src/ormconfig.ts migration:revert"
+    "typeorm:generate-migration": "npm run typeorm -- -d ./src/ormconfig.ts migration:generate ./src/migrations/migration",
+    "typeorm:create-migration": "npm run typeorm -- migration:create ./src/migrations/migration",
+    "typeorm:revert-migration": "npm run typeorm -- -d ./src/ormconfig.ts migration:revert",
+    "poststart": "npm run typeorm:run-migrations"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.4",
