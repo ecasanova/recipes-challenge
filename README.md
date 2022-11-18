@@ -37,6 +37,13 @@ $ cd recipes-challenge
 $ docker compose up -d
 ```
 
+Run this to load the database
+
+```bash
+$ cd backend
+$ npm run loadrecipes
+```
+
 ## Usage
 
 You can see the backend in: [http://127.0.0.1:3005/api](http://127.0.0.1:3005/api){:target="\_blank"}

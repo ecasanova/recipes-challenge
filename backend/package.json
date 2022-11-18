@@ -24,7 +24,8 @@
     "typeorm:generate-migration": "npm run typeorm -- -d ./src/ormconfig.ts migration:generate ./src/migrations/migration",
     "typeorm:create-migration": "npm run typeorm -- migration:create ./src/migrations/migration",
     "typeorm:revert-migration": "npm run typeorm -- -d ./src/ormconfig.ts migration:revert",
-    "poststart": "npm run typeorm:run-migrations"
+    "poststart": "npm run typeorm:run-migrations",
+    "loadrecipes": "npm run typeorm:run-migrations"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.4",
