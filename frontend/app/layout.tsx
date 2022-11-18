@@ -26,7 +26,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
         <ThemeProvider theme={darkTheme}>
           <ResponsiveAppBar />
           <CssBaseline />
-          <Container component="main" sx={{ mt: 0, mb: 2 }} maxWidth="mb">
+          <Container component="main" sx={{ mt: 0, mb: 2, maxWidth: 'mb' }}>
             {children}
           </Container>
           <StickyFooter />

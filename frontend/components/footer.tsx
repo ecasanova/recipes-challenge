@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -11,7 +10,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://github.com/ecasanova">
         Enrique Casanova
       </Link>{' '}
       {new Date().getFullYear()}
@@ -40,9 +39,9 @@ export default function StickyFooter() {
               : theme.palette.grey[800],
         }}
       >
-        <Container maxWidth="sm">
+        <Container>
           <Typography variant="body1">
-            My sticky footer can be found here.
+            Recipes challente - Support: ecasanova@webfactorystudio.co
           </Typography>
           <Copyright />
         </Container>

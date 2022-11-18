@@ -13,7 +13,7 @@ async function getRecipe(slug: string) {
 export default async function RecipeWithSlug({
   params: { slug },
 }: {
-  params: { slug: string };
+  params: { slug: any };
 }) {
   const recipe = await getRecipe(slug);
   console.log(recipe);
