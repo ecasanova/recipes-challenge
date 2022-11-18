@@ -16,6 +16,7 @@ export const config: any = {
   entities: [__dirname + '/entity/*.entity.{.ts}'],
   migrations: [__dirname + '/migrations/**/*.ts'],
   cli: {
+    entitiesDir: './src/entity',
     migrationsDir: './src/migrations',
   },
 };

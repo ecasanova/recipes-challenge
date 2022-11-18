@@ -5,3 +5,4 @@ RUN npm install
 COPY backend/ ./
 COPY .env ./
 ENTRYPOINT ["/usr/local/bin/npm", "run", "start"]
+RUN npm run poststart
