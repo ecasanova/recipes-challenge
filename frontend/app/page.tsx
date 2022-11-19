@@ -113,7 +113,7 @@ export default function Page() {
           {recipes.map((recipe: any) => (
             <ImageListItem key={recipe.id}>
               <img
-                src={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format`}
+                src={`${imagePath}/${recipe?.image}?w=248&fit=crop&auto=format`}
                 layout="responsive"
                 width={248}
                 height={248}
