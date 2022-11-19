@@ -33,6 +33,21 @@ export class RecipeController {
     return await this.recipeService.getBySlug(slug);
   }
 
+  @Get('getCategories')
+  async getCategories(): Promise<any> {
+    return await this.recipeService.getCategories();
+  }
+
+  @Get('getAreas')
+  async getAreas(): Promise<any> {
+    return await this.recipeService.getAreas();
+  }
+
+  @Get('getIngredients')
+  async getIngredients(): Promise<any> {
+    return await this.recipeService.getIngredients();
+  }
+
   @Get('loadData')
   async loadData(): Promise<any> {
     await this.recipeService.createBulkCategories();

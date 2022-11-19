@@ -98,6 +98,18 @@ export class RecipeService {
     });
   }
 
+  async getCategories() {
+    return await this.categoryRepo.find();
+  }
+
+  async getAreas() {
+    return await this.areaRepo.find();
+  }
+
+  async getIngredients() {
+    return await this.ingredientRepo.find();
+  }
+
   async createBulkCategories(): Promise<any> {
     console.log(`------------------------------------------------------`);
     console.log('Importing categories...');
