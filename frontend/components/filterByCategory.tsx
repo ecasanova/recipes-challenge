@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { CategoryType } from '../app/types/recipes-types';
+import { RecipeSearchType } from '../app/types/recipes-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -17,7 +18,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterByCategory() {
+const FilterByCategory: React.FC<Props> = ({ setSearch, search }) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [selected, setSelected] = useState<CategoryType[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -31,6 +32,11 @@ export default function FilterByCategory() {
       .then((data) => {
         setCategories(data);
         setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setCategories([]);
+        setLoading(false);
       });
   }, []);
 
@@ -39,10 +45,16 @@ export default function FilterByCategory() {
     const {
       target: { value },
     } = event;
-    setSelected(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    const selectedValues = typeof value === 'string' ? value.split(',') : value;
+    setSelected(selectedValues);
+    const selectedCategories = selectedValues.map((id) => ({ id }));
+    const newSearch = {
+      areas: search.areas,
+      ingredients: search.ingredients,
+      categories: selectedCategories,
+    };
+    //console.log(selectedCategories);
+    setSearch(newSearch);
   };
 
   return (
@@ -60,12 +72,14 @@ export default function FilterByCategory() {
         >
           {!isLoading &&
             categories.map((category) => (
-              <MenuItem key={category.id} value={category.name}>
+              <MenuItem key={category.id} value={category.id}>
                 {category.name}
               </MenuItem>
             ))}
+          {categories.length === 0 && <MenuItem>No categories found</MenuItem>}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
+export default FilterByCategory;

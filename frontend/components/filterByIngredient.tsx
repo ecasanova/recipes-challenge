@@ -17,7 +17,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterByIngredient() {
+const FilterByIngredient: React.FC<Props> = ({ setSearch, search }) => {
   const [ingredients, setIngredients] = useState<IngredientType[]>([]);
   const [selected, setSelected] = useState<IngredientType[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -31,6 +31,11 @@ export default function FilterByIngredient() {
       .then((data) => {
         setIngredients(data);
         setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIngredients([]);
+        setLoading(false);
       });
   }, []);
 
@@ -39,10 +44,16 @@ export default function FilterByIngredient() {
     const {
       target: { value },
     } = event;
-    setSelected(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    const selectedValues = typeof value === 'string' ? value.split(',') : value;
+    setSelected(selectedValues);
+    const selectedIngredients = selectedValues.map((id) => ({ id }));
+    const newSearch = {
+      areas: search.areas,
+      ingredients: selectedIngredients,
+      categories: search.categories,
+    };
+    //console.log(selectedIngredients);
+    setSearch(newSearch);
   };
 
   return (
@@ -60,12 +71,16 @@ export default function FilterByIngredient() {
         >
           {!isLoading &&
             ingredients.map((ingredient) => (
-              <MenuItem key={ingredient.id} value={ingredient.name}>
+              <MenuItem key={ingredient.id} value={ingredient.id}>
                 {ingredient.name}
               </MenuItem>
             ))}
+          {ingredients.length === 0 && (
+            <MenuItem>No ingredients found</MenuItem>
+          )}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
+export default FilterByIngredient;

@@ -11,12 +11,23 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingComponent from '../components/loadingComponent';
 import Image from 'next/image';
 import FilterBar from '../components/filterBar';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { RecipeSearchType } from '../app/types/recipes-types';
+
+const searchInitialState: RecipeSearchType = {
+  categories: [],
+  areas: [],
+  ingredients: [],
+};
 
 export default function Page() {
   const [recipes, setRecipes] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [search, setSearch] = useState(searchInitialState);
   const imagePath = process.env.NEXT_PUBLIC_ASSETS;
   const itemsPerPage = 6;
 
@@ -26,35 +37,75 @@ export default function Page() {
       {
         next: { revalidate: 600 },
         method: 'POST',
-        body: '{}',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(search),
       }
     )
       .then((res) => res.json())
       .then((data) => {
-        setPage(page + 1);
+        setPage(data.currentPage);
         setLastPage(data.totalPages);
-        setRecipes([...recipes, ...data.data]);
+        setRecipes([...data.data]);
+        setTotalItems(data.totalItems);
         setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+        setRecipes([]);
       });
-  }, [page, recipes, setPage, setLastPage, setRecipes, setLoading]);
+  }, [page, search]);
+
+  const updateSearch = useCallback(
+    async (newSearch: RecipeSearchType) => {
+      console.log('called use callback updateSearch');
+      setPage(0);
+      setLastPage(0);
+      setTotalItems(0);
+      setRecipes([]);
+      setSearch(newSearch);
+      await getRecipes();
+    },
+    [getRecipes]
+  );
 
   useEffect(() => {
     if (isLoading) {
+      console.log('called use effect');
       getRecipes();
     }
-  }, [getRecipes, isLoading]);
+    updateSearch();
+  }, [getRecipes, isLoading, setSearch, search, updateSearch]);
 
   return (
     <>
-      <FilterBar />
+      <FilterBar setSearch={updateSearch} search={search} />
+      <Typography variant="h6" component="h6" sx={{ mt: 2, mb: 2 }}>
+        Found {totalItems} recipes:
+      </Typography>
       <InfiniteScroll
-        dataLength={recipes.length}
+        dataLength={totalItems}
         next={async () => {
           if (page < lastPage) {
-            getRecipes();
+            await getRecipes();
           }
         }}
         hasMore={page < lastPage}
+        endMessage={
+          <Box>
+            {page == lastPage && page > 0 ? (
+              <Typography variant="h6" align="center" sx={{ mt: 5, mb: 5 }}>
+                Thats all folks!
+              </Typography>
+            ) : (
+              <Typography variant="h6" align="center" sx={{ mt: 5, mb: 5 }}>
+                No recipes to show, change your filters!
+              </Typography>
+            )}
+          </Box>
+        }
         loader={<LoadingComponent />}
       >
         <ImageList cols={3} gap={15}>

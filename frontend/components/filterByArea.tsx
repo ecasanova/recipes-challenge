@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { AreaType } from '../app/types/recipes-types';
+import { RecipeSearchType } from '../app/types/recipes-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -17,9 +18,9 @@ const MenuProps = {
   },
 };
 
-export default function FilterByArea() {
+const FilterByArea: React.FC<Props> = ({ setSearch, search }) => {
   const [areas, setAreas] = useState<AreaType[]>([]);
-  const [selected, setSelected] = useState<AreaType[]>([]);
+  const [selected, setSelected] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,6 +32,11 @@ export default function FilterByArea() {
       .then((data) => {
         setAreas(data);
         setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setAreas([]);
+        setLoading(false);
       });
   }, []);
 
@@ -39,10 +45,16 @@ export default function FilterByArea() {
     const {
       target: { value },
     } = event;
-    setSelected(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    const selectedValues = typeof value === 'string' ? value.split(',') : value;
+    setSelected(selectedValues);
+    const selectedAreas = selectedValues.map((id) => ({ id }));
+    const newSearch = {
+      areas: selectedAreas,
+      ingredients: search.ingredients,
+      categories: search.categories,
+    };
+    //console.log(selectedAreas);
+    setSearch(newSearch);
   };
 
   return (
@@ -60,12 +72,14 @@ export default function FilterByArea() {
         >
           {!isLoading &&
             areas.map((area) => (
-              <MenuItem key={area.id} value={area.name}>
+              <MenuItem key={area.id} value={area.id}>
                 {area.name}
               </MenuItem>
             ))}
+          {areas.length === 0 && <MenuItem>No areas found</MenuItem>}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
+export default FilterByArea;

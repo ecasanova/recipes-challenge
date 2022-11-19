@@ -19,3 +19,13 @@ export interface IngredientType {
   id: string;
   name: string;
 }
+
+export interface RecipeSearchOptions {
+  id: string;
+}
+
+export interface RecipeSearchType {
+  areas: RecipeSearchOptions[];
+  ingredients: RecipeSearchOptions[];
+  categories: RecipeSearchOptions[];
+}
