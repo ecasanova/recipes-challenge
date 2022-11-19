@@ -25,20 +25,12 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       </head>
       <body>
         <ThemeProvider theme={darkTheme}>
-          <AppContext.Provider
-            value={{
-              state: {
-                searchFilters: {},
-              },
-            }}
-          >
             <ResponsiveAppBar />
             <CssBaseline />
             <Container component="main" sx={{ mt: 0, mb: 2, maxWidth: 'mb' }}>
               {children}
             </Container>
             <StickyFooter />
-          </AppContext.Provider>
         </ThemeProvider>
       </body>
     </html>
