@@ -43,6 +43,7 @@
     "cache-manager-redis-store": "^3.0.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.3",
+    "husky": "^8.0.2",
     "ioredis": "^5.2.4",
     "nestjs-throttler-storage-redis": "^0.1.20",
     "passport": "^0.6.0",
