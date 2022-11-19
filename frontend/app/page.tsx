@@ -5,28 +5,23 @@ import React, { useEffect, useState, useCallback } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import FilterByArea from '../components/filterByArea';
-import FilterByCategory from '../components/filterByCategory';
-import FilterByIngredient from '../components/filterByIngredient';
-import Typography from '@mui/material/Typography';
 import LoadingComponent from '../components/loadingComponent';
 import Image from 'next/image';
+import FilterBar from '../components/filterBar';
 
 export default function Page() {
   const [recipes, setRecipes] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(0);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const imagePath = process.env.NEXT_PUBLIC_ASSETS;
-  const itemsPerPage = 3;
-  const matches = useMediaQuery('(min-width:600px)');
+  const itemsPerPage = 6;
 
   const getRecipes = useCallback(async () => {
-    fetch(
+    return await fetch(
       `${process.env.NEXT_PUBLIC_API}/recipe/getAll?page=${page}&limit=${itemsPerPage}`,
       {
         next: { revalidate: 600 },
@@ -38,56 +33,34 @@ export default function Page() {
       .then((data) => {
         setPage(page + 1);
         setLastPage(data.totalPages);
-        const newRecipes = [...recipes, ...data.data];
-        setRecipes(newRecipes);
+        setRecipes([...recipes, ...data.data]);
         setLoading(false);
       });
-  }, [page, recipes]);
+  }, [page, recipes, setPage, setLastPage, setRecipes, setLoading]);
 
   useEffect(() => {
-    setLoading(true);
-    getRecipes();
-  }, [
-    setLoading,
-    setRecipes,
-    setPage,
-    page,
-    getRecipes,
-    page,
-    recipes,
-    setLastPage,
-    isLoading,
-  ]);
+    if (isLoading) {
+      getRecipes();
+    }
+  }, [getRecipes, isLoading]);
 
   return (
     <>
-      <Typography variant="h5" component="h5" sx={{ mt: 2, mb: 2 }}>
-        Choose your preferences and we select the best recipe for you:
-      </Typography>
-      <ImageList cols={3} gap={15} sx={{ pb: 0, pt: 2 }}>
-        <ImageListItem>
-          <FilterByCategory />
-        </ImageListItem>
-        <ImageListItem>
-          <FilterByIngredient />
-        </ImageListItem>
-        <ImageListItem>
-          <FilterByArea />
-        </ImageListItem>
-      </ImageList>
+      <FilterBar />
       <InfiniteScroll
-        dataLength={1}
-        next={() => {
-          getRecipes();
+        dataLength={recipes.length}
+        next={async () => {
+          if (page < lastPage) {
+            getRecipes();
+          }
         }}
         hasMore={page < lastPage}
-        scrollThreshold={'300px'}
         loader={<LoadingComponent />}
       >
         <ImageList cols={3} gap={15}>
           {recipes.map((recipe: any) => (
             <ImageListItem key={recipe.id}>
-              <Image
+              <img
                 src={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format`}
                 layout="responsive"
                 width={248}
