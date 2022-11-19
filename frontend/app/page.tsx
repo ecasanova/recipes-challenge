@@ -10,16 +10,16 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import FilterByArea from '../components/filterByArea';
+import FilterByName from '../components/filterByName';
 import FilterByCategory from '../components/filterByCategory';
 import FilterByIngredient from '../components/filterByIngredient';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 
 export default function Page() {
   const [recipes, setRecipes] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [totalItems, setTotalItems] = useState(0);
   const [lastPage, setLastPage] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const imagePath = process.env.NEXT_PUBLIC_ASSETS;
@@ -62,6 +62,23 @@ export default function Page() {
 
   return (
     <>
+      <Typography variant="h5" component="h5" sx={{ mt: 2, mb: 2 }}>
+        Choose your preferences and we select the best recipe for you:
+      </Typography>
+      <ImageList cols={matches ? 2 : 4} gap={15} sx={{ pb: 0, pt: 2 }}>
+        <ImageListItem>
+          <FilterByName />
+        </ImageListItem>
+        <ImageListItem>
+          <FilterByCategory />
+        </ImageListItem>
+        <ImageListItem>
+          <FilterByIngredient />
+        </ImageListItem>
+        <ImageListItem>
+          <FilterByArea />
+        </ImageListItem>
+      </ImageList>
       <InfiniteScroll
         dataLength={1}
         next={() => {
