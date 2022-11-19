@@ -122,15 +122,27 @@ export class RecipeService {
   }
 
   async getCategories() {
-    return await this.categoryRepo.find();
+    return await this.categoryRepo.find({
+      order: {
+        name: 'ASC',
+      },
+    });
   }
 
   async getAreas() {
-    return await this.areaRepo.find();
+    return await this.areaRepo.find({
+      order: {
+        name: 'ASC',
+      },
+    });
   }
 
   async getIngredients() {
-    return await this.ingredientRepo.find();
+    return await this.ingredientRepo.find({
+      order: {
+        name: 'ASC',
+      },
+    });
   }
 
   async createBulkCategories(): Promise<any> {
