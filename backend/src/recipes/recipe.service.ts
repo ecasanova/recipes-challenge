@@ -407,6 +407,8 @@ export class RecipeService {
         },
       });
 
+      console.log('Inserting recipe:', recipeEntity.name);
+
       recipeEntity.ingredients = [
         ingredient1,
         ingredient2,
@@ -415,9 +417,9 @@ export class RecipeService {
         ingredient5,
         ingredient6,
       ];
-      console.log('Inserting recipe:', recipeEntity.name);
-      return await this.recipeRepo.create(recipeEntity);
-      return await this.recipeRepo.save(recipeEntity);
+
+      const newCreated = await this.recipeRepo.save(recipeEntity);
+      return await this.recipeRepo.update(newCreated.id, { ...recipeEntity });
     } catch (e) {
       throw new ForbiddenException('Error creating recipe');
     }

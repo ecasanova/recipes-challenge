@@ -12,7 +12,7 @@ export const config: any = {
   synchronize: true,
   migrationsRun: true,
   autoLoadEntities: true,
-  logging: true,
+  logging: false,
   entities: [__dirname + '/entity/*.entity.{.ts}'],
   migrations: [__dirname + '/migrations/**/*.ts'],
   cli: {

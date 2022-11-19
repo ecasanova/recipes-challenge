@@ -47,6 +47,7 @@ export class RecipeController {
     return await this.recipeService.getIngredients();
   }
 
+  /* Use this only for get initial data */
   @Get('loadData')
   async loadData(): Promise<any> {
     await this.recipeService.createBulkCategories();
