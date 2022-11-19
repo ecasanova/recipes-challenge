@@ -12,10 +12,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import FilterByArea from '../components/filterByArea';
 import FilterByCategory from '../components/filterByCategory';
 import FilterByIngredient from '../components/filterByIngredient';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
-import { RecipeType } from './types/recipes-types';
+import LoadingComponent from '../components/loadingComponent';
+import Image from 'next/image';
 
 export default function Page() {
   const [recipes, setRecipes] = useState<string[]>([]);
@@ -23,7 +22,7 @@ export default function Page() {
   const [lastPage, setLastPage] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const imagePath = process.env.NEXT_PUBLIC_ASSETS;
-  const itemsPerPage = 8;
+  const itemsPerPage = 3;
   const matches = useMediaQuery('(min-width:600px)');
 
   const getRecipes = useCallback(async () => {
@@ -65,7 +64,7 @@ export default function Page() {
       <Typography variant="h5" component="h5" sx={{ mt: 2, mb: 2 }}>
         Choose your preferences and we select the best recipe for you:
       </Typography>
-      <ImageList cols={matches ? 2 : 4} gap={15} sx={{ pb: 0, pt: 2 }}>
+      <ImageList cols={3} gap={15} sx={{ pb: 0, pt: 2 }}>
         <ImageListItem>
           <FilterByCategory />
         </ImageListItem>
@@ -82,18 +81,18 @@ export default function Page() {
           getRecipes();
         }}
         hasMore={page < lastPage}
-        loader={
-          <Box sx={{ display: 'flex' }}>
-            <CircularProgress />
-          </Box>
-        }
+        scrollThreshold={'300px'}
+        loader={<LoadingComponent />}
       >
-        <ImageList cols={matches ? 2 : 4} gap={15}>
+        <ImageList cols={3} gap={15}>
           {recipes.map((recipe: any) => (
             <ImageListItem key={recipe.id}>
-              <img
+              <Image
                 src={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format`}
-                srcSet={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                layout="responsive"
+                width={248}
+                height={248}
+                quality={80}
                 alt={recipe.name}
               />
               <ImageListItemBar
