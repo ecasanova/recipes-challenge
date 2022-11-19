@@ -1,10 +1,10 @@
-## Recipes Challenge
+# Recipes Challenge
 
 This project use:
 
 [NestJs](https://github.com/nestjs/nest) - Backend: NestJS is a framework for building efficient, scalable Node.js web applications. It uses modern JavaScript
 
-[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: This use NextJs 12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app){:target="\_blank"}.
+[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: This use NextJs 12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 This project use experimental `app` directory of Next13
 
@@ -20,7 +20,7 @@ This project use experimental `app` directory of Next13
 
 [TheMealDB](https://www.themealdb.com/) - This is a public database of recipes, I take this recipes and fill out my local database. Including images and thumbnails
 
-## Installation
+# Installation
 
 To run the project you need to install [docker](https://docs.docker.com), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git){:target="\_blank"} you can follow the instructions below
 
@@ -44,7 +44,7 @@ $ cd backend
 $ npm run loadrecipes
 ```
 
-## Usage
+# Usage
 
 You can see the backend in: [http://127.0.0.1:3005/api](http://127.0.0.1:3005/api)
 
@@ -56,16 +56,30 @@ PostgreSQL database is running on the port 5432
 
 Redis instance is running on the port 6379
 
-## Support
+# Support
 
 Enrique Casanova - [ecasanova@webfactorystudio.co](ecasanova@webfactorystudio.co)
 
-## Overview
+# Overview
 
 A public database was used for the initial loading of the system, this information was loaded into the PostgreSQL database, and the project includes migrations at startup
 
-## Database Structure
+# Database Structure
 
 This is the structure of the database:
 
 ![ER](er.png)
+
+# Screenshoots
+
+## Frontend
+
+![frontend](frontend.png)
+
+## Backend (API)
+
+![backend](backend.png)
+
+## Docker Containers
+
+![docker](docker.png)
