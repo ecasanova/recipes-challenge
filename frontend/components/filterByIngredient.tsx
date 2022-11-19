@@ -18,8 +18,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterByIngredient(props: any) {
-  const theme = useTheme();
+export default function FilterByIngredient() {
   const [ingredients, setIngredients] = useState<IngredientType[]>([]);
   const [selected, setSelected] = useState<IngredientType[]>([]);
   const [isLoading, setLoading] = useState(true);

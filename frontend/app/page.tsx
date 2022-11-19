@@ -1,14 +1,18 @@
 'use client';
 
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ImageList from '@mui/material/ImageList';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Recipe from '../components/recipe';
 import { RecipeType } from './types/recipes-types';
-import FilterBar from '../components/filterBar';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import Link from 'next/link';
+import Image from 'next/image';
+const imagePath = process.env.NEXT_PUBLIC_ASSETS;
 
 export default function Page() {
   const [recipes, setRecipes] = useState<RecipeType[]>([]);
@@ -17,12 +21,12 @@ export default function Page() {
   const [isLoading, setLoading] = useState(true);
   const itemsPerPage = 9;
 
-  const getMoreData = async () => {
+  const getMoreData = useCallback(() => {
     if (page < lastPage) {
       console.log('Loading more data');
-      await setLoading(true);
+      setLoading(true);
     }
-  };
+  }, [setLoading, lastPage, page]);
 
   useEffect(() => {
     if (isLoading) {
@@ -36,36 +40,41 @@ export default function Page() {
       )
         .then((response) => response.json())
         .then((recipesResult) => {
-          let newRecipes = [...recipes, ...recipesResult.data];
+          const newRecipes = [...recipes, ...recipesResult.data];
           setRecipes(newRecipes);
           setLastPage(recipesResult.totalPages);
           setPage(page + 1);
           setLoading(false);
         });
     }
-  }, [getMoreData]);
+  }, [getMoreData, isLoading, page, recipes]);
 
   return (
     <>
-      <FilterBar />
-      <InfiniteScroll
-        dataLength={recipes.length}
-        next={getMoreData}
-        refreshFunction={getMoreData}
-        hasMore={page < lastPage}
-        scrollThreshold={'200px'}
-        loader={
-          <Box sx={{ display: 'flex', justifyContent: 'center', pt: 8, pb: 8 }}>
-            <CircularProgress />
-          </Box>
-        }
-      >
-        <ImageList cols={3} gap={15}>
-          {recipes.map((recipe: RecipeType) => (
-            <Recipe data={recipe}></Recipe>
-          ))}
-        </ImageList>
-      </InfiniteScroll>
+      <ImageList cols={3} gap={15}>
+        {recipes.map((recipe: RecipeType) => (
+          <ImageListItem key={recipe.id} sx={{ height: 500 + 'px' }}>
+            <Image
+              src={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format`}
+              alt={recipe.name}
+            ></Image>
+            <ImageListItemBar
+              title={`${recipe.name}`}
+              subtitle={`${recipe.area.name} - ${recipe.category.name}`}
+              actionIcon={
+                <Link href={`recipe/${recipe.slug}`}>
+                  <IconButton
+                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                    aria-label={`See more ${recipe.name}`}
+                  >
+                    <InfoIcon />
+                  </IconButton>
+                </Link>
+              }
+            />
+          </ImageListItem>
+        ))}
+      </ImageList>
     </>
   );
 }

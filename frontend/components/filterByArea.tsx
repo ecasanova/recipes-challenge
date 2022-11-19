@@ -18,8 +18,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterByArea(props: any) {
-  const theme = useTheme();
+export default function FilterByArea() {
   const [areas, setAreas] = useState<AreaType[]>([]);
   const [selected, setSelected] = useState<AreaType[]>([]);
   const [isLoading, setLoading] = useState(true);

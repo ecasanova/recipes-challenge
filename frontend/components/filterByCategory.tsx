@@ -18,8 +18,7 @@ const MenuProps = {
   },
 };
 
-export default function FilterByCategory(props: any) {
-  const theme = useTheme();
+export default function FilterByCategory() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [selected, setSelected] = useState<CategoryType[]>([]);
   const [isLoading, setLoading] = useState(true);

@@ -1,7 +1,7 @@
 FROM node:12-alpine as recipes-api
 WORKDIR /usr/src/backend
 COPY backend/package*.json ./
-RUN npm install
 COPY backend/ ./
+RUN npm install
 COPY .env ./
 ENTRYPOINT ["/usr/local/bin/npm", "run", "start"]

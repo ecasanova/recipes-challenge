@@ -6,8 +6,7 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "material-ui"
+    "prettier"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -16,6 +15,6 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "material-ui"],
+  "plugins": ["react"],
   "rules": {}
 }
