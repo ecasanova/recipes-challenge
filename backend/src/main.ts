@@ -9,7 +9,7 @@ import { AppModule } from './app.module';
 import { TypeORMExceptionFilter } from './utils/typeorm-exceptions.filter';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
-const SERVER = '127.0.0.1';
+const SERVER = '::';
 const PORT = process.env.API_PORT || 3005;
 
 async function bootstrap() {
