@@ -45,7 +45,6 @@ export default function Page() {
       )
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setLastPage(data.totalPages);
           setPage(page + 1);
           setTotalItems(data.totalItems);
@@ -54,6 +53,8 @@ export default function Page() {
           setLoading(false);
         })
         .catch((error) => {
+          setRecipes([]);
+          setLoading(false);
           console.log(error);
         });
     },
@@ -122,7 +123,7 @@ export default function Page() {
                 loading="lazy"
               />
               <ImageListItemBar
-                title={`${recipe.name}`}
+                title={`${recipe?.name}`}
                 subtitle={`${recipe.area?.name} - ${recipe.category?.name}`}
                 actionIcon={
                   <Link href={`recipe/${recipe.slug}`}>
