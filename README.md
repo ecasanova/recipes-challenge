@@ -20,6 +20,8 @@ This project use experimental `app` directory of Next13
 
 [TheMealDB](https://www.themealdb.com/) - This is a public database of recipes, I take this recipes and fill out my local database. Including images and thumbnails
 
+[MUI](https://mui.com/) - MUI offers a comprehensive suite of UI tools to help you ship new features faster. Start with Material UI, our fully-loaded component library, or bring your own design system to our production-ready components.
+
 # Installation
 
 To run the project you need to install [docker](https://docs.docker.com), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) you can follow the instructions below
