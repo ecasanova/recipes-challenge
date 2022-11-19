@@ -50,8 +50,6 @@ export class RecipeService {
 
     queryBuilder.where('1=1');
 
-    console.log(search);
-
     if (search.areas && search.areas.length > 0) {
       search.areas.forEach((areaTerm) => {
         queryBuilder.andWhere('recipe.areaId = :area', {
