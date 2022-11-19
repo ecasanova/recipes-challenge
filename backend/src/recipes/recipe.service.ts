@@ -50,15 +50,8 @@ export class RecipeService {
 
     queryBuilder.where('1=1');
 
-    if (search.keyword) {
-      queryBuilder.andWhere('recipe.name LIKE :keyword', {
-        keyword: `%${search.keyword}%`,
-      });
-      queryBuilder.orWhere('recipe.description LIKE :keyword', {
-        keyword: `%${search.keyword}%`,
-      });
-    }
     console.log(search);
+
     if (search.areas && search.areas.length > 0) {
       search.areas.forEach((areaTerm) => {
         queryBuilder.andWhere('recipe.areaId = :area', {
@@ -83,7 +76,7 @@ export class RecipeService {
     }
 
     queryBuilder.orderBy('recipe.name', 'ASC');
-    queryBuilder.skip(page * limit).take(limit);
+    queryBuilder.skip(page).take(limit);
 
     const itemCount = await queryBuilder.getCount();
     const { entities } = await queryBuilder.getRawAndEntities();
