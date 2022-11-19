@@ -48,7 +48,7 @@ services:
       - ${API_PORT}:${API_PORT}
     volumes:
       - ./backend:/usr/src/backend
-      - ./backend/node_mdoules:/usr/src/backend/node_modules
+      - ./backend/node_modules:/usr/src/backend/node_modules
       - ./backend/static:/usr/src/backend/static
     restart: unless-stopped
     links:
@@ -84,7 +84,7 @@ services:
       - recipes-api
     volumes:
       - ./frontend:/usr/src/frontend
-      - ./frontend/node_mdoules:/usr/src/frontend/node_modules
+      - ./frontend/node_modules:/usr/src/frontend/node_modules
       - ./frontend/next:/usr/src/frontend/.next
     ports:
       - ${WEB_PORT}:3001
