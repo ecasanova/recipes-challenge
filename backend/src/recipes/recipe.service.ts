@@ -58,6 +58,29 @@ export class RecipeService {
         keyword: `%${search.keyword}%`,
       });
     }
+    console.log(search);
+    if (search.areas && search.areas.length > 0) {
+      search.areas.forEach((areaTerm) => {
+        queryBuilder.andWhere('recipe.areaId = :area', {
+          area: areaTerm.id.toString(),
+        });
+      });
+    }
+    if (search.categories && search.categories.length > 0) {
+      search.categories.forEach((categoryTerm) => {
+        queryBuilder.andWhere('recipe.categoryId = :category', {
+          category: categoryTerm.id.toString(),
+        });
+      });
+    }
+    if (search.ingredients && search.ingredients.length > 0) {
+      queryBuilder.leftJoinAndSelect('recipe.ingredients', 'ingredient');
+      search.ingredients.forEach((ingredientTerm) => {
+        queryBuilder.orWhere('ingredientId = :ingredient', {
+          ingredient: ingredientTerm.id,
+        });
+      });
+    }
 
     queryBuilder.orderBy('recipe.name', 'ASC');
     queryBuilder.skip(page * limit).take(limit);
@@ -393,7 +416,8 @@ export class RecipeService {
         ingredient6,
       ];
       console.log('Inserting recipe:', recipeEntity.name);
-      return await this.recipeRepo.insert(recipeEntity);
+      return await this.recipeRepo.create(recipeEntity);
+      return await this.recipeRepo.save(recipeEntity);
     } catch (e) {
       throw new ForbiddenException('Error creating recipe');
     }

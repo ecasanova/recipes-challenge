@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import {
   Body,
-  CacheTTL,
   Controller,
   DefaultValuePipe,
   Get,

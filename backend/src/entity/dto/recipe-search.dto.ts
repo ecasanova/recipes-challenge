@@ -5,11 +5,11 @@ export class RecipeSearchDto {
   keyword: string;
 
   @ApiProperty()
-  area: string;
+  areas: [id: string];
 
   @ApiProperty()
-  ingredient: string;
+  ingredients: [id: string];
 
   @ApiProperty()
-  category: string;
+  categories: [id: string];
 }
