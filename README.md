@@ -86,6 +86,8 @@ This is the structure of the database:
 
 ## Docker Containers
 
+![docker](docker.png)
+
 It is possible to start each container separately.
 
 ```bash
