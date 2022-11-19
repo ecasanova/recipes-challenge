@@ -22,7 +22,7 @@ This project use experimental `app` directory of Next13
 
 # Installation
 
-To run the project you need to install [docker](https://docs.docker.com), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git){:target="\_blank"} you can follow the instructions below
+To run the project you need to install [docker](https://docs.docker.com), and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) you can follow the instructions below
 
 - [How to install on mac](https://docs.docker.com/desktop/install/mac-install/)
 - [How to install on windows](https://docs.docker.com/desktop/install/windows-install/)
@@ -43,6 +43,8 @@ Run this to load the database
 $ cd backend
 $ npm run loadrecipes
 ```
+
+- si las migraciones no funcionan, se provee archivo sql `inserted-data-backup.sql`
 
 # Usage
 
