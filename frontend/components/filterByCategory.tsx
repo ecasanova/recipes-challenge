@@ -5,6 +5,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useEffect, useState } from 'react';
+import { CategoryType } from '../app/types/recipes-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -16,37 +18,29 @@ const MenuProps = {
   },
 };
 
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-function getStyles(name: any, personName: any, theme: any) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-export default function FilterByCategory() {
+export default function FilterByCategory(props: any) {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [selected, setSelected] = useState<CategoryType[]>([]);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`${process.env.NEXT_PUBLIC_API}/recipe/getCategories`, {
+      next: { revalidate: 600 },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setCategories(data);
+        setLoading(false);
+      });
+  }, []);
 
   const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setSelected(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
@@ -54,26 +48,23 @@ export default function FilterByCategory() {
 
   return (
     <div>
-      <FormControl sx={{ m: 0, minWidth: '100%' }}>
-        <InputLabel id="demo-multiple-name-label">Category</InputLabel>
+      <FormControl sx={{ m: 0, minWidth: '100%', maxWidth: '100%' }}>
+        <InputLabel id="multiple-category-label">Category</InputLabel>
         <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
+          labelId="multiple-category-label"
+          id="multiple-category"
           multiple
-          value={personName}
+          value={selected}
           onChange={handleChange}
-          input={<OutlinedInput label="Name" />}
+          input={<OutlinedInput label="Category" />}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
+          {!isLoading &&
+            categories.map((category) => (
+              <MenuItem key={category.id} value={category.name}>
+                {category.name}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
     </div>

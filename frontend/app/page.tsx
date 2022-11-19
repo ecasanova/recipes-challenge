@@ -1,119 +1,68 @@
 'use client';
 
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import FilterByArea from '../components/filterByArea';
-import FilterByName from '../components/filterByName';
-import FilterByCategory from '../components/filterByCategory';
-import FilterByIngredient from '../components/filterByIngredient';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
+import Recipe from '../components/recipe';
+import { RecipeType } from './types/recipes-types';
+import FilterBar from '../components/filterBar';
 
 export default function Page() {
-  const [recipes, setRecipes] = useState<string[]>([]);
+  const [recipes, setRecipes] = useState<RecipeType[]>([]);
   const [page, setPage] = useState(0);
   const [lastPage, setLastPage] = useState(0);
-  const [isLoading, setLoading] = useState(false);
-  const imagePath = process.env.NEXT_PUBLIC_ASSETS;
-  const itemsPerPage = 8;
-  const matches = useMediaQuery('(min-width:600px)');
+  const [isLoading, setLoading] = useState(true);
+  const itemsPerPage = 9;
 
-  const getRecipes = async () => {
-    fetch(
-      `${process.env.NEXT_PUBLIC_API}/recipe/getAll?page=${page}&limit=${itemsPerPage}`,
-      {
-        next: { revalidate: 600 },
-        method: 'POST',
-        body: '{}',
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setPage(page + 1);
-        setLastPage(data.totalPages);
-        let newRecipes = [...recipes, ...data.data];
-        setRecipes(newRecipes);
-        setLoading(false);
-      });
+  const getMoreData = async () => {
+    if (page < lastPage) {
+      console.log('Loading more data');
+      await setLoading(true);
+    }
   };
 
   useEffect(() => {
-    setLoading(true);
-    getRecipes();
-  }, [
-    setLoading,
-    setRecipes,
-    setPage,
-    page,
-    getRecipes,
-    page,
-    recipes,
-    setLastPage,
-    isLoading,
-  ]);
+    if (isLoading) {
+      fetch(
+        `${process.env.NEXT_PUBLIC_API}/recipe/getAll?page=${page}&limit=${itemsPerPage}`,
+        {
+          next: { revalidate: 600 },
+          method: 'POST',
+          body: '{}',
+        }
+      )
+        .then((response) => response.json())
+        .then((recipesResult) => {
+          let newRecipes = [...recipes, ...recipesResult.data];
+          setRecipes(newRecipes);
+          setLastPage(recipesResult.totalPages);
+          setPage(page + 1);
+          setLoading(false);
+        });
+    }
+  }, [getMoreData]);
 
   return (
     <>
-      <Typography variant="h5" component="h5" sx={{ mt: 2, mb: 2 }}>
-        Choose your preferences and we select the best recipe for you:
-      </Typography>
-      <ImageList cols={matches ? 2 : 4} gap={15} sx={{ pb: 0, pt: 2 }}>
-        <ImageListItem>
-          <FilterByName />
-        </ImageListItem>
-        <ImageListItem>
-          <FilterByCategory />
-        </ImageListItem>
-        <ImageListItem>
-          <FilterByIngredient />
-        </ImageListItem>
-        <ImageListItem>
-          <FilterByArea />
-        </ImageListItem>
-      </ImageList>
+      <FilterBar />
       <InfiniteScroll
-        dataLength={1}
-        next={() => {
-          getRecipes();
-        }}
+        dataLength={recipes.length}
+        next={getMoreData}
+        refreshFunction={getMoreData}
         hasMore={page < lastPage}
+        scrollThreshold={'200px'}
         loader={
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', pt: 8, pb: 8 }}>
             <CircularProgress />
           </Box>
         }
       >
-        <ImageList cols={matches ? 2 : 4} gap={15}>
-          {recipes.map((recipe: any) => (
-            <ImageListItem key={recipe.id}>
-              <img
-                src={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format`}
-                srcSet={`${imagePath}/${recipe.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt={recipe.name}
-              />
-              <ImageListItemBar
-                title={`${recipe.name}`}
-                subtitle={`${recipe.area.name} - ${recipe.category.name}`}
-                actionIcon={
-                  <Link href={`recipe/${recipe.slug}`}>
-                    <IconButton
-                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                      aria-label={`See more ${recipe.name}`}
-                    >
-                      <InfoIcon />
-                    </IconButton>
-                  </Link>
-                }
-              />
-            </ImageListItem>
+        <ImageList cols={3} gap={15}>
+          {recipes.map((recipe: RecipeType) => (
+            <Recipe data={recipe}></Recipe>
           ))}
         </ImageList>
       </InfiniteScroll>

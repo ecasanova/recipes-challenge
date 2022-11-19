@@ -9,6 +9,7 @@ import ResponsiveAppBar from '../components/header';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import AppContext from '../components/appContext';
 
 const darkTheme = createTheme({
   palette: {
@@ -20,16 +21,24 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <html lang="en">
       <head>
-        <title>Next.js</title>
+        <title>Recipes Challenges</title>
       </head>
       <body>
         <ThemeProvider theme={darkTheme}>
-          <ResponsiveAppBar />
-          <CssBaseline />
-          <Container component="main" sx={{ mt: 0, mb: 2, maxWidth: 'mb' }}>
-            {children}
-          </Container>
-          <StickyFooter />
+          <AppContext.Provider
+            value={{
+              state: {
+                searchFilters: {},
+              },
+            }}
+          >
+            <ResponsiveAppBar />
+            <CssBaseline />
+            <Container component="main" sx={{ mt: 0, mb: 2, maxWidth: 'mb' }}>
+              {children}
+            </Container>
+            <StickyFooter />
+          </AppContext.Provider>
         </ThemeProvider>
       </body>
     </html>
