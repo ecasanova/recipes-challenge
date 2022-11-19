@@ -91,6 +91,7 @@ services:
     build:
       context: .
       dockerfile: ./docker/dockerfile-api-frontend
+    network_mode: bridge
 
 volumes:
   recipes-db:
