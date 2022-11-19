@@ -85,3 +85,13 @@ This is the structure of the database:
 ## Docker Containers
 
 ![docker](docker.png)
+
+Es posible inciar cada contenedor por separado.
+
+```bash
+docker compose up recipes-api -d #recipes-api (NestJs)
+docker compose up recipes-web -d #recipes-web (NextJs)
+docker compose up recipes-db -d #recipes-db (PostgreSQL)
+docker compose up recipes-cache -d #recipes-cache (Redis)
+docker compose up redis-commander -d #redis-commander
+```

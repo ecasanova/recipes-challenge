@@ -4,6 +4,5 @@ COPY frontend/package*.json ./
 RUN npm install
 COPY frontend ./
 COPY .env ./
-RUN npm link webpack
 RUN npm run build
-ENTRYPOINT ["/usr/local/bin/npm", "run", "dev"]
+ENTRYPOINT ["/usr/local/bin/npm", "run", "start"]
