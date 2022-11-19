@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -35,6 +34,7 @@ export default function FilterByCategory() {
       });
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (event: any) => {
     const {
       target: { value },
