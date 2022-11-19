@@ -46,7 +46,7 @@ $ cd backend
 $ npm run loadrecipes
 ```
 
-- si las migraciones no funcionan, se provee archivo sql `inserted-data-backup.sql`
+- If migrations don't work, sql file `inserted-data-backup.sql` is provided
 
 # Usage
 
@@ -86,7 +86,7 @@ This is the structure of the database:
 
 ## Docker Containers
 
-Es posible inciar cada contenedor por separado.
+It is possible to start each container separately.
 
 ```bash
 docker compose up recipes-api -d #recipes-api (NestJs)
