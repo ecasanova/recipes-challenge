@@ -4,7 +4,7 @@ This project use:
 
 [NestJs](https://github.com/nestjs/nest) - Backend: NestJS is a framework for building efficient, scalable Node.js web applications. It uses modern JavaScript
 
-[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: This use NextJs 12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: This project use NextJs13 bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 This project use experimental `app` directory of Next13
 
