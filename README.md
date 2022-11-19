@@ -4,7 +4,7 @@ This project use:
 
 [NestJs](https://github.com/nestjs/nest) - Backend: NestJS is a framework for building efficient, scalable Node.js web applications. It uses modern JavaScript
 
-[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: This use NextJs 12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app){:target="\_blank"}.
+[NextJs v13](https://nextjs.org/blog/next-13) - Frontend: This use NextJs 12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 This project use experimental `app` directory of Next13
 
@@ -69,3 +69,17 @@ A public database was used for the initial loading of the system, this informati
 This is the structure of the database:
 
 ![ER](er.png)
+
+## Screenshoots
+
+# Frontend
+
+![ER](er.png)
+
+# Backend (API)
+
+![backend](backend.png)
+
+# Docker Containers
+
+![docker](docker.png)
