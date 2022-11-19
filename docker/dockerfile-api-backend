@@ -4,4 +4,4 @@ COPY backend/package*.json ./
 RUN npm install
 COPY backend/ ./
 COPY .env ./
-ENTRYPOINT ["/usr/local/bin/npm", "start"]
+ENTRYPOINT ["/usr/local/bin/npm", "run start"]

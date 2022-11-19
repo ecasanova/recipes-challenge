@@ -13,6 +13,7 @@ export default function FilterByIngredient(props: any) {
           onChange={(event) => {
             props.filterCategory(event.target.value);
           }}
+          value={''}
         >
           <MenuItem value={''}>
             <em>All</em>

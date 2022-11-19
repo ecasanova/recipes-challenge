@@ -29,6 +29,7 @@ export default function StickyFooter() {
     >
       <Box
         component="footer"
+        id="footer"
         sx={{
           py: 3,
           px: 2,
@@ -41,7 +42,7 @@ export default function StickyFooter() {
       >
         <Container>
           <Typography variant="body1">
-            Recipes challente - Support: ecasanova@webfactorystudio.co
+            Recipes challenge - Support: ecasanova@webfactorystudio.co
           </Typography>
           <Copyright />
         </Container>

@@ -13,6 +13,7 @@ export default function FilterByArea(props: any) {
           onChange={(event) => {
             props.filterArea(event.target.value);
           }}
+          value={''}
         >
           <MenuItem value={''}>
             <em>All</em>
