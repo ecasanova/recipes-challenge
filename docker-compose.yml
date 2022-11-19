@@ -87,7 +87,7 @@ services:
       - ./frontend/node_modules:/usr/src/frontend/node_modules
       - ./frontend/.next:/usr/src/frontend/.next
     ports:
-      - ${WEB_PORT}:3001
+      - ${WEB_PORT}:3000
     build:
       context: .
       dockerfile: ./docker/dockerfile-api-frontend
