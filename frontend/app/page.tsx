@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Link from 'next/link';
@@ -118,13 +119,12 @@ export default function Page() {
         <ImageList cols={3} gap={15}>
           {recipes.map((recipe: any) => (
             <ImageListItem key={recipe.id}>
-              <Image
+              <img
                 src={`${imagePath}/${recipe?.image}?w=248&fit=crop&auto=format`}
-                layout="responsive"
                 width={248}
                 height={248}
-                quality={80}
                 alt={recipe.name}
+                loading="lazy"
               />
               <ImageListItemBar
                 title={`${recipe?.name}`}
