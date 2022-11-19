@@ -29,3 +29,9 @@ export interface RecipeSearchType {
   ingredients: RecipeSearchOptions[];
   categories: RecipeSearchOptions[];
 }
+
+export interface RecipeSearchStateType {
+  search: RecipeSearchType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setSearch: any;
+}

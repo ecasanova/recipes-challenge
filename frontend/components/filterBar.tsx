@@ -3,8 +3,9 @@ import FilterByCategory from './filterByCategory';
 import FilterByIngredient from './filterByIngredient';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import { RecipeSearchStateType } from '../app/types/recipes-types';
 
-const FilterBar: React.FC<Props> = ({ setSearch, search }) => {
+const FilterBar = ({ search, setSearch }: RecipeSearchStateType) => {
   return (
     <Grid container spacing={0} sx={{ mb: 4 }}>
       <Grid item xs={12}>

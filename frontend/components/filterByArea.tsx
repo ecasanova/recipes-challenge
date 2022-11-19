@@ -5,8 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
-import { AreaType } from '../app/types/recipes-types';
-import { RecipeSearchType } from '../app/types/recipes-types';
+import { AreaType, RecipeSearchStateType } from '../app/types/recipes-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -18,7 +17,7 @@ const MenuProps = {
   },
 };
 
-const FilterByArea: React.FC<Props> = ({ setSearch, search }) => {
+const FilterByArea = ({ search, setSearch }: RecipeSearchStateType) => {
   const [areas, setAreas] = useState<AreaType[]>([]);
   const [selected, setSelected] = useState<any[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -47,7 +46,7 @@ const FilterByArea: React.FC<Props> = ({ setSearch, search }) => {
     } = event;
     const selectedValues = typeof value === 'string' ? value.split(',') : value;
     setSelected(selectedValues);
-    const selectedAreas = selectedValues.map((id) => ({ id }));
+    const selectedAreas = selectedValues.map((id: string) => ({ id }));
     const newSearch = {
       areas: selectedAreas,
       ingredients: search.ingredients || [],

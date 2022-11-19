@@ -12,7 +12,11 @@ import LoadingComponent from '../components/loadingComponent';
 import FilterBar from '../components/filterBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { RecipeSearchType, RecipeType } from '../app/types/recipes-types';
+import {
+  RecipeSearchType,
+  RecipeSearchStateType,
+} from '../app/types/recipes-types';
+import Image from 'next/image';
 
 const searchInitialState: RecipeSearchType = {
   categories: [],
@@ -61,7 +65,8 @@ export default function Page() {
     []
   );
 
-  const updateSearch = useCallback(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateSearch: any = useCallback(
     async (newSearch: RecipeSearchType) => {
       console.log('Search:', newSearch);
       setSearch(newSearch);
@@ -113,14 +118,13 @@ export default function Page() {
         <ImageList cols={3} gap={15}>
           {recipes.map((recipe: any) => (
             <ImageListItem key={recipe.id}>
-              <img
+              <Image
                 src={`${imagePath}/${recipe?.image}?w=248&fit=crop&auto=format`}
                 layout="responsive"
                 width={248}
                 height={248}
                 quality={80}
                 alt={recipe.name}
-                loading="lazy"
               />
               <ImageListItemBar
                 title={`${recipe?.name}`}

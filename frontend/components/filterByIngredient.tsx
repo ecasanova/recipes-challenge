@@ -5,7 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
-import { IngredientType } from '../app/types/recipes-types';
+import {
+  IngredientType,
+  RecipeSearchStateType,
+} from '../app/types/recipes-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -17,7 +20,7 @@ const MenuProps = {
   },
 };
 
-const FilterByIngredient: React.FC<Props> = ({ setSearch, search }) => {
+const FilterByIngredient = ({ search, setSearch }: RecipeSearchStateType) => {
   const [ingredients, setIngredients] = useState<IngredientType[]>([]);
   const [selected, setSelected] = useState<IngredientType[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -46,7 +49,7 @@ const FilterByIngredient: React.FC<Props> = ({ setSearch, search }) => {
     } = event;
     const selectedValues = typeof value === 'string' ? value.split(',') : value;
     setSelected(selectedValues);
-    const selectedIngredients = selectedValues.map((id) => ({ id }));
+    const selectedIngredients = selectedValues.map((id: string) => ({ id }));
     const newSearch = {
       areas: search.areas || [],
       ingredients: selectedIngredients,
