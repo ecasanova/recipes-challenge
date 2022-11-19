@@ -46,7 +46,7 @@ $ cd backend
 $ npm run loadrecipes
 ```
 
-- If migrations don't work, sql file `inserted-data-backup.sql` is provided
+- If migrations don't work, sql file `data-backup.sql` is provided
 
 # Usage
 
@@ -72,13 +72,13 @@ A public database was used for the initial loading of the system, this informati
 
 This is the structure of the database:
 
-![ER](er.png)
+![ER](screenshots/er.png)
 
 # Screenshoots
 
 ## Frontend
 
-![frontend](frontend.png)
+![frontend](screenshots/frontend.png)
 
 It is possible to initialize the repository locally (The api service is required, it must be turned on)
 
@@ -89,7 +89,7 @@ $ npm run build && npm run start
 
 ## Backend (API)
 
-![backend](backend.png)
+![backend](screenshots/backend.png)
 
 It is possible to initialize the repository locally (The database and the cache service are required, they must be activated)
 
@@ -100,7 +100,7 @@ $ npm run start
 
 ## Docker Containers
 
-![docker](docker.png)
+![docker](screenshots/docker.png)
 
 It is possible to start each container separately.
 

@@ -85,7 +85,7 @@ services:
     volumes:
       - ./frontend:/usr/src/frontend
       - ./frontend/node_modules:/usr/src/frontend/node_modules
-      - ./frontend/next:/usr/src/frontend/.next
+      - ./frontend/.next:/usr/src/frontend/.next
     ports:
       - ${WEB_PORT}:3001
     build:
