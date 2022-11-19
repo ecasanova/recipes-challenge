@@ -56,6 +56,7 @@ export class RecipeService {
           area: areaTerm.id.toString(),
         });
       });
+      //console.log('search.areas', search.areas);
     }
     if (search.categories && search.categories.length > 0) {
       search.categories.forEach((categoryTerm) => {
@@ -63,6 +64,7 @@ export class RecipeService {
           category: categoryTerm.id.toString(),
         });
       });
+      //console.log('search.categories', search.categories);
     }
     if (search.ingredients && search.ingredients.length > 0) {
       queryBuilder.leftJoinAndSelect('recipe.ingredients', 'ingredient');
@@ -74,7 +76,7 @@ export class RecipeService {
     }
 
     queryBuilder.orderBy('recipe.name', 'ASC');
-    queryBuilder.skip(page).take(limit);
+    queryBuilder.skip(page * limit).take(limit);
 
     const itemCount = await queryBuilder.getCount();
     const { entities } = await queryBuilder.getRawAndEntities();
