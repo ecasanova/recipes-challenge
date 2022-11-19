@@ -69,10 +69,11 @@ export class RecipeService {
     if (search.ingredients && search.ingredients.length > 0) {
       queryBuilder.leftJoinAndSelect('recipe.ingredients', 'ingredient');
       search.ingredients.forEach((ingredientTerm) => {
-        queryBuilder.orWhere('ingredientId = :ingredient', {
-          ingredient: ingredientTerm.id,
+        queryBuilder.andWhere('ingredientId = :ingredient', {
+          ingredient: ingredientTerm.id.toString(),
         });
       });
+      console.log('search.ingredients', search.ingredients);
     }
 
     queryBuilder.orderBy('recipe.name', 'ASC');
