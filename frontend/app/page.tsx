@@ -9,11 +9,10 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingComponent from '../components/loadingComponent';
-import Image from 'next/image';
 import FilterBar from '../components/filterBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { RecipeSearchType } from '../app/types/recipes-types';
+import { RecipeSearchType, RecipeType } from '../app/types/recipes-types';
 
 const searchInitialState: RecipeSearchType = {
   categories: [],
@@ -31,53 +30,55 @@ export default function Page() {
   const imagePath = process.env.NEXT_PUBLIC_ASSETS;
   const itemsPerPage = 6;
 
-  const getRecipes = useCallback(async () => {
-    return await fetch(
-      `${process.env.NEXT_PUBLIC_API}/recipe/getAll?page=${page}&limit=${itemsPerPage}`,
-      {
-        next: { revalidate: 600 },
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(search),
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setPage(data.currentPage);
-        setLastPage(data.totalPages);
-        setRecipes([...data.data]);
-        setTotalItems(data.totalItems);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-        setRecipes([]);
-      });
-  }, [page, search]);
+  const getRecipes = useCallback(
+    async (search: RecipeSearchType, page: number, recipes: string[]) => {
+      return await fetch(
+        `${process.env.NEXT_PUBLIC_API}/recipe/getAll?page=${page}&limit=${itemsPerPage}`,
+        {
+          next: { revalidate: 600 },
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(search),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setLastPage(data.totalPages);
+          setPage(page + 1);
+          setTotalItems(data.totalItems);
+          const newRecipes = recipes.concat(data.data);
+          setRecipes(newRecipes);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    []
+  );
 
   const updateSearch = useCallback(
     async (newSearch: RecipeSearchType) => {
-      console.log('called use callback updateSearch');
+      console.log('Search:', newSearch);
+      setSearch(newSearch);
+      setLoading(true);
+      setRecipes([]);
+      setTotalItems(0);
       setPage(0);
       setLastPage(0);
-      setTotalItems(0);
-      setRecipes([]);
-      setSearch(newSearch);
-      await getRecipes();
+      await getRecipes(newSearch, 0, []);
     },
     [getRecipes]
   );
 
   useEffect(() => {
     if (isLoading) {
-      console.log('called use effect');
-      getRecipes();
+      getRecipes(search, page, recipes);
     }
-    updateSearch();
-  }, [getRecipes, isLoading, setSearch, search, updateSearch]);
+  }, [getRecipes, page, isLoading, recipes, search]);
 
   return (
     <>
@@ -86,10 +87,10 @@ export default function Page() {
         Found {totalItems} recipes:
       </Typography>
       <InfiniteScroll
-        dataLength={totalItems}
+        dataLength={itemsPerPage * page}
         next={async () => {
           if (page < lastPage) {
-            await getRecipes();
+            setLoading(true);
           }
         }}
         hasMore={page < lastPage}
@@ -118,10 +119,11 @@ export default function Page() {
                 height={248}
                 quality={80}
                 alt={recipe.name}
+                loading="lazy"
               />
               <ImageListItemBar
                 title={`${recipe.name}`}
-                subtitle={`${recipe.area.name} - ${recipe.category.name}`}
+                subtitle={`${recipe.area?.name} - ${recipe.category?.name}`}
                 actionIcon={
                   <Link href={`recipe/${recipe.slug}`}>
                     <IconButton

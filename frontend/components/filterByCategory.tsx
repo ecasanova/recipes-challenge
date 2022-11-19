@@ -6,7 +6,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import { CategoryType } from '../app/types/recipes-types';
-import { RecipeSearchType } from '../app/types/recipes-types';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -49,8 +48,8 @@ const FilterByCategory: React.FC<Props> = ({ setSearch, search }) => {
     setSelected(selectedValues);
     const selectedCategories = selectedValues.map((id) => ({ id }));
     const newSearch = {
-      areas: search.areas,
-      ingredients: search.ingredients,
+      areas: search.areas || [],
+      ingredients: search.ingredients || [],
       categories: selectedCategories,
     };
     //console.log(selectedCategories);

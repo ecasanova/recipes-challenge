@@ -48,9 +48,9 @@ const FilterByIngredient: React.FC<Props> = ({ setSearch, search }) => {
     setSelected(selectedValues);
     const selectedIngredients = selectedValues.map((id) => ({ id }));
     const newSearch = {
-      areas: search.areas,
+      areas: search.areas || [],
       ingredients: selectedIngredients,
-      categories: search.categories,
+      categories: search.categories || [],
     };
     //console.log(selectedIngredients);
     setSearch(newSearch);

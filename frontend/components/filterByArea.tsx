@@ -50,8 +50,8 @@ const FilterByArea: React.FC<Props> = ({ setSearch, search }) => {
     const selectedAreas = selectedValues.map((id) => ({ id }));
     const newSearch = {
       areas: selectedAreas,
-      ingredients: search.ingredients,
-      categories: search.categories,
+      ingredients: search.ingredients || [],
+      categories: search.categories || [],
     };
     //console.log(selectedAreas);
     setSearch(newSearch);
