@@ -80,9 +80,23 @@ This is the structure of the database:
 
 ![frontend](frontend.png)
 
+It is possible to initialize the repository locally (The api service is required, it must be turned on)
+
+```bash
+$ cd frontend
+$ npm run build && npm run start
+```
+
 ## Backend (API)
 
 ![backend](backend.png)
+
+It is possible to initialize the repository locally (The database and the cache service are required, they must be activated)
+
+```bash
+$ cd backend
+$ npm run start
+```
 
 ## Docker Containers
 
