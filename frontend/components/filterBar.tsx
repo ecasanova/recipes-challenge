@@ -13,13 +13,13 @@ const FilterBar = ({ search, setSearch }: RecipeSearchStateType) => {
           Choose your preferences and we select the best recipe for you:
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <FilterByCategory setSearch={setSearch} search={search} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <FilterByArea setSearch={setSearch} search={search} />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             <FilterByIngredient setSearch={setSearch} search={search} />
           </Grid>
         </Grid>
