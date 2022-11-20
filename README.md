@@ -1,4 +1,4 @@
-# Recipes Challenge ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app={recipes-challenge})
+# Recipes Challenge ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=recipes-challenge)
 
 
 This project use:
