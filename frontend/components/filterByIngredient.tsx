@@ -46,7 +46,7 @@ const FilterByIngredient = ({ search, setSearch }: RecipeSearchStateType) => {
           multiple
           id="tags-standard"
           options={ingredients}
-          onChange={(event: any, newValue: IngredientType | null) => {
+          onChange={(event: any, newValue: any | null) => {
             const newSearch = {
               areas: search.areas || [],
               ingredients: newValue || [],
