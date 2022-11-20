@@ -67,12 +67,15 @@ export class RecipeService {
       //console.log('search.categories', search.categories);
     }
     if (search.ingredients && search.ingredients.length > 0) {
-      queryBuilder.leftJoinAndSelect('recipe.ingredients', 'ingredient');
-      search.ingredients.forEach((ingredientTerm) => {
-        queryBuilder.andWhere('ingredientId = :ingredient', {
-          ingredient: ingredientTerm.id.toString(),
-        });
-      });
+      const ingredientsIds = search.ingredients.map((ingredient) =>
+        ingredient.id.toString(),
+      );
+      queryBuilder.innerJoin(
+        'recipe.ingredients',
+        'ingredient',
+        'ingredient.id IN (:...ingredientsIds)',
+        { ingredientsIds },
+      );
       console.log('search.ingredients', search.ingredients);
     }
 
