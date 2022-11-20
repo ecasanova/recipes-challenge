@@ -111,3 +111,8 @@ docker compose up recipes-db -d #recipes-db (PostgreSQL)
 docker compose up recipes-cache -d #recipes-cache (Redis)
 docker compose up redis-commander -d #redis-commander
 ```
+
+# Deployed in Vercel
+
+See this project live on [https://recipes-challenge.vercel.app](https://recipes-challenge.vercel.app)
+
