@@ -13,11 +13,7 @@ import LoadingComponent from '../components/loadingComponent';
 import FilterBar from '../components/filterBar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {
-  RecipeSearchType,
-  RecipeSearchStateType,
-} from '../app/types/recipes-types';
-import Image from 'next/image';
+import { RecipeSearchType } from '../app/types/recipes-types';
 
 const searchInitialState: RecipeSearchType = {
   categories: [],
@@ -58,6 +54,9 @@ export default function Page() {
           setLoading(false);
         })
         .catch((error) => {
+          setTotalItems(0);
+          setPage(0);
+          setLastPage(0);
           setRecipes([]);
           setLoading(false);
           console.log(error);
@@ -95,7 +94,7 @@ export default function Page() {
       </Typography>
       <InfiniteScroll
         dataLength={itemsPerPage * page}
-        next={async () => {
+        next={() => {
           if (page < lastPage) {
             setLoading(true);
           }
@@ -117,31 +116,35 @@ export default function Page() {
         loader={<LoadingComponent />}
       >
         <ImageList cols={3} gap={15}>
-          {recipes.map((recipe: any) => (
-            <ImageListItem key={recipe.id}>
-              <img
-                src={`${imagePath}/${recipe?.image}?w=248&fit=crop&auto=format`}
-                width={248}
-                height={248}
-                alt={recipe.name}
-                loading="lazy"
-              />
-              <ImageListItemBar
-                title={`${recipe?.name}`}
-                subtitle={`${recipe.area?.name} - ${recipe.category?.name}`}
-                actionIcon={
-                  <Link href={`recipe/${recipe.slug}`}>
-                    <IconButton
-                      sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                      aria-label={`See more ${recipe.name}`}
-                    >
-                      <InfoIcon />
-                    </IconButton>
-                  </Link>
-                }
-              />
-            </ImageListItem>
-          ))}
+          {recipes.length > 0 &&
+            recipes.map((recipe: any) => {
+              if (recipe != null && typeof recipe !== 'undefined') {
+                return (
+                  <ImageListItem key={recipe?.id}>
+                    <img
+                      src={`${imagePath}/${recipe?.image}?w=248&fit=crop&auto=format`}
+                      srcSet={`${imagePath}/${recipe?.image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                      alt={recipe?.name}
+                      loading="lazy"
+                    />
+                    <ImageListItemBar
+                      title={`${recipe?.name}`}
+                      subtitle={`${recipe?.area?.name} - ${recipe?.category?.name}`}
+                      actionIcon={
+                        <Link href={`recipe/${recipe?.slug}`}>
+                          <IconButton
+                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                            aria-label={`See more ${recipe?.name}`}
+                          >
+                            <InfoIcon />
+                          </IconButton>
+                        </Link>
+                      }
+                    />
+                  </ImageListItem>
+                );
+              }
+            })}
         </ImageList>
       </InfiniteScroll>
     </>

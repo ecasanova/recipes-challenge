@@ -32,7 +32,7 @@ const FilterByIngredient = ({ search, setSearch }: RecipeSearchStateType) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setIngredients(data);
+        setIngredients(data.slice(0, 100));
         setLoading(false);
       })
       .catch((error) => {
@@ -64,6 +64,7 @@ const FilterByIngredient = ({ search, setSearch }: RecipeSearchStateType) => {
       <FormControl sx={{ m: 0, minWidth: '100%', maxWidth: '100%' }}>
         <InputLabel id="multiple-ingredient-label">Ingredient</InputLabel>
         <Select
+          native
           labelId="multiple-ingredient-label"
           id="multiple-ingredient"
           multiple
