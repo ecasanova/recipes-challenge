@@ -115,5 +115,7 @@ docker compose up redis-commander -d #redis-commander
 
 # Deployed in Vercel
 
-See this project live on [https://recipes-challenge.vercel.app](https://recipes-challenge.vercel.app)
+Changes in the master branch of this project are automatically published in vercel >> [https://recipes-challenge.vercel.app](https://recipes-challenge.vercel.app)
+
+
 
