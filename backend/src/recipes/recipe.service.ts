@@ -76,7 +76,7 @@ export class RecipeService {
         'ingredient.id IN (:...ingredientsIds)',
         { ingredientsIds },
       );
-      console.log('search.ingredients', search.ingredients);
+      //console.log('search.ingredients', search.ingredients);
     }
 
     queryBuilder.orderBy('recipe.name', 'ASC');
