@@ -1,6 +1,5 @@
 # Recipes Challenge ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=recipes-challenge)
 
-
 This project use:
 
 [NestJs](https://github.com/nestjs/nest) - Backend: NestJS is a framework for building efficient, scalable Node.js web applications. It uses modern JavaScript
@@ -19,7 +18,7 @@ This project use experimental `app` directory of Next13
 
 [Redis](https://redis.io/) - Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker.
 
-[TheMealDB](https://www.themealdb.com/) - This is a public database of recipes, I take this recipes and fill out my local database. Including images and thumbnails
+[TheMealDB](https://www.themealdb.com/) - This is a public database of recipes, I take this recipes and fill out my local database. Including images
 
 [MUI](https://mui.com/) - MUI offers a comprehensive suite of UI tools to help you ship new features faster. Start with Material UI, our fully-loaded component library, or bring your own design system to our production-ready components.
 
@@ -116,6 +115,3 @@ docker compose up redis-commander -d #redis-commander
 # Deployed in Vercel
 
 Changes in the master branch of this project are automatically published in vercel >> [https://recipes-challenge.vercel.app](https://recipes-challenge.vercel.app)
-
-
-
