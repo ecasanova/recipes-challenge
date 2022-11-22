@@ -31,7 +31,7 @@ export default function Page() {
   const [search, setSearch] = useState(searchInitialState);
   const imagePath = process.env.NEXT_PUBLIC_ASSETS;
   const itemsPerPage = 6;
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery('(min-width:900px)');
 
   const getRecipes = useCallback(
     async (search: RecipeSearchType, page: number, recipes: string[]) => {
@@ -117,7 +117,7 @@ export default function Page() {
         }
         loader={<LoadingComponent />}
       >
-        <ImageList gap={15} cols={matches ? 3 : 2}>
+        <ImageList gap={15} cols={matches ? 3 : 1}>
           {recipes.length > 0 &&
             recipes.map((recipe: any) => {
               if (recipe != null && typeof recipe !== 'undefined') {
