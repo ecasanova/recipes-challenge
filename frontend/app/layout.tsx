@@ -21,6 +21,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     <html lang="en">
       <head>
         <title>Recipes Challenges</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body>
         <ThemeProvider theme={darkTheme}>
