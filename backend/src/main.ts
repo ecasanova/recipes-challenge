@@ -41,7 +41,7 @@ async function bootstrap() {
     prefix: '/static/',
     index: false,
   });
-  await app.listen(Number(PORT));
+  await app.listen(Number(PORT), SERVER);
 
   console.log(`------------------------------------------------------`);
   console.log(`Application is running on: ${await app.getUrl()}`);
