@@ -112,6 +112,10 @@ docker compose up recipes-cache -d #recipes-cache (Redis)
 docker compose up redis-commander -d #redis-commander
 ```
 
-# Deployed in Vercel
+# Frontend Deployed in Vercel
 
 Changes in the master branch of this project are automatically published in vercel >> [https://recipes-challenge.vercel.app](https://recipes-challenge.vercel.app)
+
+# Backend Deployed in Render
+
+Changes in the master branch of this project are automatically published in render >> [https://recipes-api-ro2f.onrender.com/api](https://recipes-api-ro2f.onrender.com/api)
